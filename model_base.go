@@ -113,6 +113,15 @@ func (p *Properties) Add(v Property) {
 	p.Count++
 }
 
+func (p *Properties) Get(name string) *Property {
+	for n := range p.Property {
+		if p.Property[n].Name == name {
+			return &p.Property[n]
+		}
+	}
+	return nil
+}
+
 // Represents a link to the Builds entity.
 type Related struct {
 	Builds *Builds `json:"builds,omitempty"`
