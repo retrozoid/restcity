@@ -41,78 +41,48 @@ type AuditLocator struct {
 	User            string `json:"user,omitempty"` // Locator of user who caused the audit event.
 }
 
-func BuildLocatorID(id int32) BuildLocator {
+func BuildLocatorID(id int64) BuildLocator {
 	return BuildLocator{Id: id}
 }
 
 // Represents a locator string for filtering Build entities.
 type BuildLocator struct {
-	// Project (direct or indirect parent) locator.
-	AffectedProject string `json:"affectedProject,omitempty"`
-	// Agent locator.
-	Agent string `json:"agent,omitempty"`
-	// typeId of agent used to execute build.
-	AgentTypeId int32 `json:"agentTypeId,omitempty"`
-	// State can be any.
-	Any                bool   `json:"any,omitempty"`
+	AffectedProject    string `json:"affectedProject,omitempty"` // Project (direct or indirect parent) locator.
+	Agent              string `json:"agent,omitempty"`           // Agent locator.
+	AgentTypeId        int32  `json:"agentTypeId,omitempty"`     // typeId of agent used to execute build.
+	Any                bool   `json:"any,omitempty"`             // State can be any.
 	ArtifactDependency string `json:"artifactDependency,omitempty"`
-	// Branch locator.
-	Branch string `json:"branch,omitempty"`
-	// Build type locator.
-	BuildType string `json:"buildType,omitempty"`
-	// Is canceled.
-	Canceled bool `json:"canceled,omitempty"`
-	// Agent locator.
-	CompatibleAgent string `json:"compatibleAgent,omitempty"`
-	// Is composite.
-	Composite bool `json:"composite,omitempty"`
-	// For paginated calls, how many entities to return per page.
-	Count int32 `json:"count,omitempty"`
-	// If true, applies default filter which returns only \"normal\" builds (finished builds which are not canceled, not failed-to-start, not personal, and on default branch (in branched build configurations)).
-	DefaultFilter bool `json:"defaultFilter,omitempty"`
-	// Is failed to start.
-	FailedToStart bool `json:"failedToStart,omitempty"`
-	// Requires either date or build dimension.
-	FinishDate string `json:"finishDate,omitempty"`
-	// Is finished.
-	Finished bool `json:"finished,omitempty"`
-	// Is hanging.
-	Hanging bool `json:"hanging,omitempty"`
-	// Is history build.
-	History bool `json:"history,omitempty"`
-	// Entity ID.
-	Id int32 `json:"id,omitempty"`
-	// Supply multiple locators and return a union of the results.
-	Item string `json:"item,omitempty"`
-	// Limit processing to the latest `<lookupLimit>` entities.
-	LookupLimit int32  `json:"lookupLimit,omitempty"`
-	Number      string `json:"number,omitempty"`
-	// Is a personal build.
-	Personal bool `json:"personal,omitempty"`
-	// Is pinned.
-	Pinned bool `json:"pinned,omitempty"`
-	// Project (direct parent) locator.
-	Project  string `json:"project,omitempty"`
-	Property string `json:"property,omitempty"`
-	// Is queued.
-	Queued bool `json:"queued,omitempty"`
-	// Requires either date or build dimension.
-	QueuedDate string `json:"queuedDate,omitempty"`
-	// Is running.
-	Running            bool   `json:"running,omitempty"`
+	Branch             string `json:"branch,omitempty"`          // Branch locator.
+	BuildType          string `json:"buildType,omitempty"`       // Build type locator.
+	Canceled           bool   `json:"canceled,omitempty"`        // Is canceled.
+	CompatibleAgent    string `json:"compatibleAgent,omitempty"` // Agent locator.
+	Composite          bool   `json:"composite,omitempty"`       // Is composite.
+	Count              int32  `json:"count,omitempty"`           // For paginated calls, how many entities to return per page.
+	DefaultFilter      bool   `json:"defaultFilter,omitempty"`   // If true, applies default filter which returns only \"normal\" builds (finished builds which are not canceled, not failed-to-start, not personal, and on default branch (in branched build configurations)).
+	FailedToStart      bool   `json:"failedToStart,omitempty"`   // Is failed to start.
+	FinishDate         string `json:"finishDate,omitempty"`      // Requires either date or build dimension.
+	Finished           bool   `json:"finished,omitempty"`        // Is finished.
+	Hanging            bool   `json:"hanging,omitempty"`         // Is hanging.
+	History            bool   `json:"history,omitempty"`         // Is history build.
+	Id                 int64  `json:"id,omitempty"`              // Entity ID.
+	Item               string `json:"item,omitempty"`            // Supply multiple locators and return a union of the results.
+	LookupLimit        int32  `json:"lookupLimit,omitempty"`     // Limit processing to the latest `<lookupLimit>` entities.
+	Number             string `json:"number,omitempty"`
+	Personal           bool   `json:"personal,omitempty"` // Is a personal build.
+	Pinned             bool   `json:"pinned,omitempty"`   // Is pinned.
+	Project            string `json:"project,omitempty"`  // Project (direct parent) locator.
+	Property           string `json:"property,omitempty"`
+	Queued             bool   `json:"queued,omitempty"`     // Is queued.
+	QueuedDate         string `json:"queuedDate,omitempty"` // Requires either date or build dimension.
+	Running            bool   `json:"running,omitempty"`    // Is running.
 	SnapshotDependency string `json:"snapshotDependency,omitempty"`
-	// For paginated calls, from which entity to start rendering the page.
-	Start int32 `json:"start,omitempty"`
-	// Requires either date or build dimension.
-	StartDate string `json:"startDate,omitempty"`
-	State     string `json:"state,omitempty"`
-	Status    string `json:"status,omitempty"`
-	// Tag locator.
-	Tag string `json:"tag,omitempty"`
-	// ID of a build or build promotion.
-	TaskId int32 `json:"taskId,omitempty"`
-	// User locator.
-	User string `json:"user,omitempty"`
+	Start              int32  `json:"start,omitempty"`     // For paginated calls, from which entity to start rendering the page.
+	StartDate          string `json:"startDate,omitempty"` // Requires either date or build dimension.
+	State              string `json:"state,omitempty"`
+	Status             string `json:"status,omitempty"`
+	Tag                string `json:"tag,omitempty"`    // Tag locator.
+	TaskId             int32  `json:"taskId,omitempty"` // ID of a build or build promotion.
+	User               string `json:"user,omitempty"`   // User locator.
 }
 
 // Represents a locator string for filtering Build entities.
