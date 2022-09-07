@@ -36,23 +36,23 @@ func (t BuildQueueAPI) GetAllQueuedBuilds(buildQueueLocator BuildQueueLocator, f
 }
 
 // AddBuildToQueue Add a new build to the queue.
-func (t BuildQueueAPI) AddBuildToQueue(body Build, moveToTop bool) (value Build, err error) {
+func (t BuildQueueAPI) AddBuildToQueue(data Build, moveToTop bool) (value Build, err error) {
 	req := Request{
 		Path: "/app/rest/buildQueue",
 		Values: Values{
 			"moveToTop": moveToTop,
 		},
-		Data: body,
+		Data: data,
 	}
 	return value, req.Post(t.HTTPClient, &value)
 }
 
 // SetQueuedBuildsOrder Update the build queue order.
-func (t BuildQueueAPI) SetQueuedBuildsOrder(body Builds, fields string) (value Builds, err error) {
+func (t BuildQueueAPI) SetQueuedBuildsOrder(data Builds, fields string) (value Builds, err error) {
 	req := Request{
 		Path:   "/app/rest/buildQueue/order",
 		Values: Values{"fields": fields},
-		Data:   body,
+		Data:   data,
 	}
 	err = req.Put(t.HTTPClient, &value)
 	return
@@ -69,11 +69,11 @@ func (t BuildQueueAPI) GetQueuedBuildPosition(queuePosition string, fields strin
 }
 
 // SetQueuedBuildPosition Update the queue position of a queued matching build.
-func (t BuildQueueAPI) SetQueuedBuildPosition(queuePosition string, body Build, fields string) (value Build, err error) {
+func (t BuildQueueAPI) SetQueuedBuildPosition(queuePosition string, data Build, fields string) (value Build, err error) {
 	req := Request{
 		Path:   fmt.Sprintf("/app/rest/buildQueue/order/%s", queuePosition),
 		Values: Values{"fields": fields},
-		Data:   body,
+		Data:   data,
 	}
 	err = req.Put(t.HTTPClient, &value)
 	return

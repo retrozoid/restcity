@@ -1,6 +1,8 @@
 package trac
 
-import "net/http"
+import (
+	"net/http"
+)
 
 // Represents a single name-value relation.
 type Entry struct {
@@ -62,6 +64,10 @@ type OperationResult struct {
 	Related *RelatedEntity `json:"related,omitempty"`
 }
 
+func NewProperty(name, value string) Property {
+	return Property{Name: name, Value: value}
+}
+
 // Represents a name-value-type relation.
 type Property struct {
 	Name      string     `json:"name,omitempty"`
@@ -100,6 +106,11 @@ type Properties struct {
 	Count    int32      `json:"count,omitempty"`
 	Href     string     `json:"href,omitempty"`
 	Property []Property `json:"property,omitempty"`
+}
+
+func (p *Properties) Add(v Property) {
+	p.Property = append(p.Property, v)
+	p.Count++
 }
 
 // Represents a link to the Builds entity.

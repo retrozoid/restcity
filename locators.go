@@ -41,6 +41,10 @@ type AuditLocator struct {
 	User            string `json:"user,omitempty"` // Locator of user who caused the audit event.
 }
 
+func BuildLocatorID(id int32) BuildLocator {
+	return BuildLocator{Id: id}
+}
+
 // Represents a locator string for filtering Build entities.
 type BuildLocator struct {
 	// Project (direct or indirect parent) locator.
