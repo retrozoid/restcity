@@ -108,9 +108,9 @@ type Properties struct {
 	Property []Property `json:"property,omitempty"`
 }
 
-func (p *Properties) Add(v Property) {
-	p.Property = append(p.Property, v)
-	p.Count++
+func (p *Properties) Add(v ...Property) {
+	p.Property = append(p.Property, v...)
+	p.Count += int32(len(v))
 }
 
 func (p *Properties) Get(name string) *Property {

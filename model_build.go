@@ -1,18 +1,18 @@
 package trac
 
-func (b Build) WithProperty(p Property) Build {
+func (b Build) WithProperties(p ...Property) Build {
 	if b.Properties == nil {
 		b.Properties = new(Properties)
 	}
-	b.Properties.Add(p)
+	b.Properties.Add(p...)
 	return b
 }
 
-func (b Build) WithTag(p Tag) Build {
+func (b Build) WithTags(p ...Tag) Build {
 	if b.Tags == nil {
 		b.Tags = new(Tags)
 	}
-	b.Tags.Add(p)
+	b.Tags.Add(p...)
 	return b
 }
 
@@ -166,9 +166,9 @@ type Tags struct {
 	Tag   []Tag `json:"tag,omitempty"`
 }
 
-func (p *Tags) Add(v Tag) {
-	p.Tag = append(p.Tag, v)
-	p.Count++
+func (p *Tags) Add(v ...Tag) {
+	p.Tag = append(p.Tag, v...)
+	p.Count += int32(len(v))
 }
 
 // Represents the user/trigger/dependency which caused this build to start.
