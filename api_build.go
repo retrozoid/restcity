@@ -373,7 +373,7 @@ func (t BuildAPI) GetAllBuilds(buildQueueLocator BuildLocator, fields string) (v
 // GetBuildStatisticValue Get a statistical value of the matching build.
 func (t BuildAPI) GetBuildStatisticValue(buildLocator BuildLocator, name string) (value string, err error) {
 	req := Request{
-		Path:     fmt.Sprintf("/app/rest/builds/%s/statistics/{name}", locatorString(buildLocator), name),
+		Path:     fmt.Sprintf("/app/rest/builds/%s/statistics/%s", locatorString(buildLocator), name),
 		Consumer: Coders.String,
 	}
 	err = req.Get(t.HTTPClient, &value)
@@ -495,18 +495,19 @@ func (t BuildAPI) GetBuildActualParameters(buildLocator BuildLocator, fields str
 	return
 }
 
-// // DownloadFileOfBuild Download specific file.
-// func (t BuildAPI) DownloadFileOfBuild(path string, buildLocator BuildLocator, resolveParameters bool, logBuildUsage bool) (value void, err error) {
-// 	req := Request{
-// 		Path: fmt.Sprintf("/app/rest/builds/%s/artifacts/files{path}", locatorString(buildLocator), path),
-// 		Values: Values{
-// 			"locator": locatorstring(buildQueueLocator),
-// 			"fields":  fields,
-// 		},
-// 	}
-// 	err = req.Get(t.HTTPClient, &value)
-// 	return
-// }
+// DownloadFileOfBuild Download specific file.
+func (t BuildAPI) DownloadFileOfBuild(buildLocator BuildLocator, path string, resolveParameters bool, logBuildUsage bool) (value string, err error) {
+	req := Request{
+		Path: fmt.Sprintf("/app/rest/builds/%s/artifacts/files%s", locatorString(buildLocator), path),
+		Values: Values{
+			"resolveParameters": resolveParameters,
+			"logBuildUsage":     logBuildUsage,
+		},
+		Consumer: Coders.Stream,
+	}
+	err = req.Get(t.HTTPClient, &value)
+	return
+}
 
 // SetBuildComment Update the comment on the matching build.
 func (t BuildAPI) SetBuildComment(buildLocator BuildLocator, data string) (err error) {

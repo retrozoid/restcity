@@ -37,7 +37,10 @@ func (t BuildTypeAPI) GetBuildTypeBuildTags(btLocator BuildTypeLocator, field st
 
 // GetBuildParameterValueOfBuildType Get value of build parameter.
 func (t BuildTypeAPI) GetBuildParameterValueOfBuildType(btLocator BuildTypeLocator, name string) (value string, err error) {
-	req := Request{Path: fmt.Sprintf("/app/rest/buildTypes/%s/parameters/%s/value", locatorString(btLocator), name)}
+	req := Request{
+		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/parameters/%s/value", locatorString(btLocator), name),
+		Consumer: Coders.String,
+	}
 	err = req.Get(t.HTTPClient, &value)
 	return
 }
@@ -652,7 +655,7 @@ func (t BuildTypeAPI) GetZippedFileOfBuildType(path string, basePath string, loc
 			"locator":           locator,
 			"resolveParameters": resolveParameters,
 		},
-		Consumer: Coders.String,
+		Consumer: Coders.Stream,
 	}
 	err = req.Get(t.HTTPClient, &value)
 	return
