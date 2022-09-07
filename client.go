@@ -256,3 +256,11 @@ type APIError struct {
 func (e APIError) Error() string {
 	return e.Message
 }
+
+func IsHTTPStatusCode(err error, statusCode int) bool {
+	if err == nil {
+		return false
+	}
+	e, ok := err.(APIError)
+	return ok && e.StatusCode == statusCode
+}
