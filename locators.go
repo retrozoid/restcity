@@ -472,6 +472,10 @@ type MuteLocator struct {
 	UnmuteDate time.Time `json:"unmuteDate,omitempty"`
 }
 
+func ProjectLocatorID(id string) ProjectLocator {
+	return ProjectLocator{Id: id}
+}
+
 // Represents a locator string for filtering Project entities.
 type ProjectLocator struct {
 	// Project (direct or indirect parent) locator.

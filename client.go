@@ -4,7 +4,6 @@ package trac
 
 import (
 	"bytes"
-	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -12,6 +11,8 @@ import (
 	"strings"
 	"time"
 )
+
+var defaultCoder = Coders.JSON
 
 type requestCustomizer interface {
 	Do(r *http.Request)
@@ -24,7 +25,6 @@ type Authorization interface {
 
 type Configuration struct {
 	ServerURL string
-	isXML     bool
 	auth      Authorization
 }
 
@@ -42,7 +42,6 @@ func NewTokenAuthConfiguration(serverURL, token string) Configuration {
 	return Configuration{
 		ServerURL: serverURL,
 		auth:      TokenAuth(token),
-		isXML:     false,
 	}
 }
 
@@ -87,35 +86,36 @@ func (t TokenAuth) Do(r *http.Request) {
 	r.Header.Set("Authorization", "Bearer "+string(t))
 }
 
-type ClientImpl struct {
-	BuildAPI      BuildAPI
-	BuildQueueAPI BuildQueueAPI
-	RootAPI       RootAPI
-}
-
 type roundTripper struct {
 	baseURL string
 	auth    Authorization
 	retry   int
 }
 
-func NewHTTPClient(c Configuration) *http.Client {
-	u := strings.TrimRight(c.ServerURL, "/") + c.auth.Prefix()
+func (c Configuration) NewHTTPClient() *http.Client {
 	return &http.Client{
 		Transport: roundTripper{
-			baseURL: u,
+			baseURL: strings.TrimRight(c.ServerURL, "/") + c.auth.Prefix(),
 			auth:    c.auth,
 			retry:   5,
 		},
 	}
 }
 
+type ClientImpl struct {
+	BuildAPI      BuildAPI
+	BuildQueueAPI BuildQueueAPI
+	RootAPI       RootAPI
+	ProjectAPI    ProjectAPI
+}
+
 func New(c Configuration) ClientImpl {
-	httpClient := NewHTTPClient(c)
+	httpClient := c.NewHTTPClient()
 	return ClientImpl{
 		BuildAPI:      BuildAPI{HTTPClient: httpClient},
 		BuildQueueAPI: BuildQueueAPI{HTTPClient: httpClient},
 		RootAPI:       RootAPI{HTTPClient: httpClient},
+		ProjectAPI:    ProjectAPI{HTTPClient: httpClient},
 	}
 }
 
@@ -179,32 +179,33 @@ type Request struct {
 	Path     string
 	Values   Values
 	Data     interface{}
-	Consumes Mime
+	Consumer Coder
 }
 
 func (r Request) Get(client *http.Client, value interface{}) error {
-	return r.Do(client, http.MethodGet, value, r.Consumes)
+	return r.Do(client, http.MethodGet, value, r.Consumer)
 }
 
 func (r Request) Post(client *http.Client, value interface{}) error {
-	return r.Do(client, http.MethodPost, value, r.Consumes)
+	return r.Do(client, http.MethodPost, value, r.Consumer)
 }
 
 func (r Request) Put(client *http.Client, value interface{}) error {
-	return r.Do(client, http.MethodPut, value, r.Consumes)
+	return r.Do(client, http.MethodPut, value, r.Consumer)
 }
 
 func (r Request) Delete(client *http.Client) error {
-	return r.Do(client, http.MethodDelete, nil, r.Consumes)
+	return r.Do(client, http.MethodDelete, nil, r.Consumer)
 }
 
-func (r Request) Do(client *http.Client, method string, result interface{}, produces Mime) error {
-	if r.Consumes == nil {
-		r.Consumes = ApplicationJson
+func (r Request) Do(client *http.Client, method string, result interface{}, producer Coder) error {
+	if r.Consumer == nil {
+		r.Consumer = defaultCoder
 	}
-	var data io.Reader
+
+	var data = new(bytes.Buffer)
 	if r.Data != nil {
-		if err := r.Consumes.Decode(r.Data, data); err != nil {
+		if err := r.Consumer.Encode(r.Data, data); err != nil {
 			return err
 		}
 	}
@@ -213,24 +214,45 @@ func (r Request) Do(client *http.Client, method string, result interface{}, prod
 	if err != nil {
 		return err
 	}
-	r.Consumes.Do(req)
+	req.Header.Set("Accept", r.Consumer.String())
+	req.Header.Set("Content-Type", r.Consumer.String())
 	if len(r.Values) > 0 {
 		req.URL.RawQuery = r.Values.Encode()
 	}
+
 	response, err := client.Do(req)
 	if err != nil {
 		return err
 	}
 	if response.StatusCode != http.StatusOK {
-		text, _ := nopCloserRead(response.Body)
-		return errors.New(string(text))
+		e := APIError{
+			RequestURL: req.RequestURI,
+			Method:     req.Method,
+			StatusCode: response.StatusCode,
+		}
+		err = Coders.String.Decode(response.Body, &e.Message)
+		if err != nil {
+			e.Message = err.Error()
+		}
+		return e
 	}
 
 	if result != nil {
-		if produces == nil {
-			produces = r.Consumes
+		if producer == nil {
+			producer = r.Consumer
 		}
-		return produces.Encode(response.Body, result)
+		return producer.Decode(response.Body, result)
 	}
 	return nil
+}
+
+type APIError struct {
+	Method     string
+	RequestURL string
+	StatusCode int
+	Message    string
+}
+
+func (e APIError) Error() string {
+	return e.Message
 }

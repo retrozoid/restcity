@@ -9,5 +9,5 @@ type RootAPI struct {
 }
 
 func (t RootAPI) GetRootEndpointsOfRoot() (value string, err error) {
-	return value, Request{Path: "/app/rest", Consumes: TextPlain}.Get(t.HTTPClient, &value)
+	return value, Request{Path: "/app/rest", Consumer: Coders.String}.Get(t.HTTPClient, &value)
 }

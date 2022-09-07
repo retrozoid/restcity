@@ -13,7 +13,7 @@ type BuildAPI struct {
 func (t BuildAPI) GetAggregatedBuildStatus(buildLocator BuildLocator) (value string, err error) {
 	req := Request{
 		Path:     fmt.Sprintf("/app/rest/builds/aggregated/%s/status", locatorString(buildLocator)),
-		Consumes: TextPlain,
+		Consumer: Coders.String,
 	}
 	err = req.Get(t.HTTPClient, &value)
 	return
@@ -25,7 +25,7 @@ func (t BuildAPI) AddLogMessageToBuild(buildLocator BuildLocator, data string, f
 		Path:     fmt.Sprintf("/app/rest/builds/%s/log", locatorString(buildLocator)),
 		Values:   Values{"fields": fields},
 		Data:     data,
-		Consumes: TextPlain,
+		Consumer: Coders.String,
 	}
 	err = req.Post(t.HTTPClient, nil)
 	return
@@ -53,8 +53,11 @@ func (t BuildAPI) DeleteMultipleBuildComments(buildLocator BuildLocator, fields 
 }
 
 // GetBuildStatusIcon Get the status icon (in specified format) of the matching build.
-func (t BuildAPI) GetBuildStatusIcon(buildLocator BuildLocator, suffix string) (value []byte, err error) {
-	req := Request{Path: fmt.Sprintf("/app/rest/builds/%s/statusIcon%s", locatorString(buildLocator), suffix)}
+func (t BuildAPI) GetBuildStatusIcon(buildLocator BuildLocator, suffix string) (value string, err error) {
+	req := Request{
+		Path:     fmt.Sprintf("/app/rest/builds/%s/statusIcon%s", locatorString(buildLocator), suffix),
+		Consumer: Coders.String,
+	}
 	err = req.Get(t.HTTPClient, &value)
 	return
 }
@@ -152,7 +155,7 @@ func (t BuildAPI) SetBuildNumber(buildLocator BuildLocator, data string) (value 
 	req := Request{
 		Path:     fmt.Sprintf("/app/rest/builds/%s/number", locatorString(buildLocator)),
 		Data:     data,
-		Consumes: TextPlain,
+		Consumer: Coders.String,
 	}
 	err = req.Put(t.HTTPClient, &value)
 	return
@@ -162,7 +165,7 @@ func (t BuildAPI) SetBuildNumber(buildLocator BuildLocator, data string) (value 
 func (t BuildAPI) GetBuildNumber(buildLocator BuildLocator) (value string, err error) {
 	req := Request{
 		Path:     fmt.Sprintf("/app/rest/builds/%s/number", locatorString(buildLocator)),
-		Consumes: TextPlain,
+		Consumer: Coders.String,
 	}
 	err = req.Get(t.HTTPClient, &value)
 	return
@@ -218,7 +221,7 @@ func (t BuildAPI) GetFileMetadataOfBuild(path string, fields string, buildLocato
 func (t BuildAPI) GetBuildResultingProperties(buildLocator BuildLocator, propertyName string) (value string, err error) {
 	req := Request{
 		Path:     fmt.Sprintf("/app/rest/builds/%s/resulting-properties/%s", locatorString(buildLocator), propertyName),
-		Consumes: TextPlain,
+		Consumer: Coders.String,
 	}
 	err = req.Get(t.HTTPClient, &value)
 	return
@@ -267,19 +270,20 @@ func (t BuildAPI) GetBuildPinInfo(buildLocator BuildLocator, fields string) (val
 }
 
 // GetBuildSourceFile Get a source file of the matching build.
-// func (t BuildAPI) GetBuildSourceFile(buildLocator BuildLocator, fileName string) (value []byte, err error) {
-// 	req := Request{
-// 		Path:     fmt.Sprintf("/app/rest/builds/%s/sources/files/%s", locatorString(buildLocator), fileName),
-// 		Consumes: MimeStream,
-// 	}
-// 	err = req.Get(t.HTTPClient, &value)
-// 	return
-// }
+func (t BuildAPI) GetBuildSourceFile(buildLocator BuildLocator, fileName string) (value string, err error) {
+	req := Request{
+		Path:     fmt.Sprintf("/app/rest/builds/%s/sources/files/%s", locatorString(buildLocator), fileName),
+		Consumer: Coders.Stream,
+	}
+	err = req.Get(t.HTTPClient, &value)
+	return
+}
 
 // GetAggregatedBuildStatusIcon Get the status icon (in specified format) of aggregated matching builds.
-func (t BuildAPI) GetAggregatedBuildStatusIcon(buildLocator BuildLocator, suffix string) (value []byte, err error) {
+func (t BuildAPI) GetAggregatedBuildStatusIcon(buildLocator BuildLocator, suffix string) (value string, err error) {
 	req := Request{
-		Path: fmt.Sprintf("/app/rest/builds/aggregated/%s/statusIcon%s", locatorString(buildLocator), suffix),
+		Path:     fmt.Sprintf("/app/rest/builds/aggregated/%s/statusIcon%s", locatorString(buildLocator), suffix),
+		Consumer: Coders.String,
 	}
 	err = req.Get(t.HTTPClient, &value)
 	return
@@ -310,7 +314,7 @@ func (t BuildAPI) AddProblemToBuild(buildLocator BuildLocator, data string, fiel
 func (t BuildAPI) GetBuildField(buildLocator BuildLocator, field string) (value string, err error) {
 	req := Request{
 		Path:     fmt.Sprintf("/app/rest/builds/%s/%s", locatorString(buildLocator), field),
-		Consumes: TextPlain,
+		Consumer: Coders.String,
 	}
 	err = req.Get(t.HTTPClient, &value)
 	return
@@ -320,7 +324,7 @@ func (t BuildAPI) GetBuildField(buildLocator BuildLocator, field string) (value 
 func (t BuildAPI) SetFinishedTime(buildLocator BuildLocator) (value string, err error) {
 	req := Request{
 		Path:     fmt.Sprintf("/app/rest/builds/%s/finish", locatorString(buildLocator)),
-		Consumes: TextPlain,
+		Consumer: Coders.String,
 	}
 	err = req.Put(t.HTTPClient, &value)
 	return
@@ -330,7 +334,7 @@ func (t BuildAPI) SetFinishedTime(buildLocator BuildLocator) (value string, err 
 func (t BuildAPI) GetArtifactsDirectory(buildLocator BuildLocator) (value string, err error) {
 	req := Request{
 		Path:     fmt.Sprintf("/app/rest/builds/%s/artifactsDirectory", locatorString(buildLocator)),
-		Consumes: TextPlain,
+		Consumer: Coders.String,
 	}
 	err = req.Get(t.HTTPClient, &value)
 	return
@@ -340,7 +344,7 @@ func (t BuildAPI) GetArtifactsDirectory(buildLocator BuildLocator) (value string
 func (t BuildAPI) GetBuildFinishDate(buildLocator BuildLocator) (value string, err error) {
 	req := Request{
 		Path:     fmt.Sprintf("/app/rest/builds/%s/finishDate", locatorString(buildLocator)),
-		Consumes: TextPlain,
+		Consumer: Coders.String,
 	}
 	err = req.Get(t.HTTPClient, &value)
 	return
@@ -350,7 +354,7 @@ func (t BuildAPI) GetBuildFinishDate(buildLocator BuildLocator) (value string, e
 func (t BuildAPI) SetBuildFinishDate(buildLocator BuildLocator, data string) (value string, err error) {
 	req := Request{
 		Path:     fmt.Sprintf("/app/rest/builds/%s/finishDate", locatorString(buildLocator)),
-		Consumes: TextPlain,
+		Consumer: Coders.String,
 	}
 	err = req.Put(t.HTTPClient, &value)
 	return
@@ -370,7 +374,7 @@ func (t BuildAPI) GetAllBuilds(buildQueueLocator BuildLocator, fields string) (v
 func (t BuildAPI) GetBuildStatisticValue(buildLocator BuildLocator, name string) (value string, err error) {
 	req := Request{
 		Path:     fmt.Sprintf("/app/rest/builds/%s/statistics/{name}", locatorString(buildLocator), name),
-		Consumes: TextPlain,
+		Consumer: Coders.String,
 	}
 	err = req.Get(t.HTTPClient, &value)
 	return
@@ -401,7 +405,7 @@ func (t BuildAPI) SetBuildStatusText(buildLocator BuildLocator, data string) (va
 	req := Request{
 		Path:     fmt.Sprintf("/app/rest/builds/%s/statusText", locatorString(buildLocator)),
 		Data:     data,
-		Consumes: TextPlain,
+		Consumer: Coders.String,
 	}
 	err = req.Put(t.HTTPClient, &value)
 	return
@@ -411,7 +415,7 @@ func (t BuildAPI) SetBuildStatusText(buildLocator BuildLocator, data string) (va
 func (t BuildAPI) GetBuildStatusText(buildLocator BuildLocator) (value string, err error) {
 	req := Request{
 		Path:     fmt.Sprintf("/app/rest/builds/%s/statusText", locatorString(buildLocator)),
-		Consumes: TextPlain,
+		Consumer: Coders.String,
 	}
 	err = req.Get(t.HTTPClient, &value)
 	return
@@ -421,7 +425,7 @@ func (t BuildAPI) GetBuildStatusText(buildLocator BuildLocator) (value string, e
 func (t BuildAPI) GetBuildResolved(buildLocator BuildLocator, val string) (value string, err error) {
 	req := Request{
 		Path:     fmt.Sprintf("/app/rest/builds/%s/resolved/%s", locatorString(buildLocator), val),
-		Consumes: TextPlain,
+		Consumer: Coders.String,
 	}
 	err = req.Get(t.HTTPClient, &value)
 	return
@@ -509,7 +513,7 @@ func (t BuildAPI) SetBuildComment(buildLocator BuildLocator, data string) (err e
 	req := Request{
 		Path:     fmt.Sprintf("/app/rest/builds/%s/comment", locatorString(buildLocator)),
 		Data:     data,
-		Consumes: TextPlain,
+		Consumer: Coders.String,
 	}
 	err = req.Put(t.HTTPClient, nil)
 	return
@@ -519,7 +523,7 @@ func (t BuildAPI) SetBuildComment(buildLocator BuildLocator, data string) (err e
 func (t BuildAPI) DeleteBuildComment(buildLocator BuildLocator) (err error) {
 	req := Request{
 		Path:     fmt.Sprintf("/app/rest/builds/%s/comment", locatorString(buildLocator)),
-		Consumes: TextPlain,
+		Consumer: Coders.String,
 	}
 	err = req.Delete(t.HTTPClient)
 	return
@@ -531,9 +535,9 @@ func (t BuildAPI) MarkBuildAsRunning(buildLocator BuildLocator, data string, fie
 		Path:     fmt.Sprintf("/app/rest/builds/%s/runningData", locatorString(buildLocator)),
 		Values:   Values{"fields": fields},
 		Data:     data,
-		Consumes: TextPlain,
+		Consumer: Coders.String,
 	}
-	err = req.Do(t.HTTPClient, http.MethodPut, &value, ApplicationJson)
+	err = req.Do(t.HTTPClient, http.MethodPut, &value, Coders.JSON)
 	return
 }
 
