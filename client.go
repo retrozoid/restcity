@@ -6,7 +6,6 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"net/url"
 	"strings"
@@ -125,8 +124,6 @@ func (r roundTripper) RoundTrip(req *http.Request) (response *http.Response, err
 	u := r.baseURL.JoinPath(req.URL.Path)
 	u.RawQuery = req.URL.RawQuery
 	req.URL = u
-
-	log.Print(req.URL.String())
 
 	var buf []byte
 	if req.GetBody != nil {
