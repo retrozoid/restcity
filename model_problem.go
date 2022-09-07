@@ -3,7 +3,7 @@ package trac
 // Represents an issue with the test.
 type Problem struct {
 	Id                 string              `json:"id,omitempty"`
-	Type_              string              `json:"type,omitempty"`
+	Type               string              `json:"type,omitempty"`
 	Identity           string              `json:"identity,omitempty"`
 	Href               string              `json:"href,omitempty"`
 	Description        string              `json:"description,omitempty"`
@@ -38,7 +38,7 @@ type ProblemOccurrences struct {
 // Represents an instance of a failed test in the specific build.
 type ProblemOccurrence struct {
 	Id                    string   `json:"id,omitempty"`
-	Type_                 string   `json:"type,omitempty"`
+	Type                  string   `json:"type,omitempty"`
 	Identity              string   `json:"identity,omitempty"`
 	Href                  string   `json:"href,omitempty"`
 	Muted                 bool     `json:"muted,omitempty"`
@@ -164,12 +164,12 @@ type ParsedTestName struct {
 // Represents a name-value-type relation.
 type TypedValue struct {
 	Name  string `json:"name,omitempty"`
-	Type_ string `json:"type,omitempty"`
+	Type  string `json:"type,omitempty"`
 	Value string `json:"value,omitempty"`
 }
 
 // Represents an investigation resolution timestamp and details.
 type Resolution struct {
-	Type_ string `json:"type,omitempty"`
-	Time  string `json:"time,omitempty"`
+	Type string `json:"type,omitempty"`
+	Time string `json:"time,omitempty"`
 }

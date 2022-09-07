@@ -33,7 +33,7 @@ type LicenseKey struct {
 	Obsolete            bool   `json:"obsolete,omitempty"`
 	ExpirationDate      string `json:"expirationDate,omitempty"`
 	MaintenanceEndDate  string `json:"maintenanceEndDate,omitempty"`
-	Type_               string `json:"type,omitempty"`
+	Type                string `json:"type,omitempty"`
 	Servers             int32  `json:"servers,omitempty"`
 	Agents              int32  `json:"agents,omitempty"`
 	UnlimitedAgents     bool   `json:"unlimitedAgents,omitempty"`

@@ -11,7 +11,7 @@ type ArtifactDependencies struct {
 type ArtifactDependency struct {
 	Id              string      `json:"id,omitempty"`
 	Name            string      `json:"name,omitempty"`
-	Type_           string      `json:"type,omitempty"`
+	Type            string      `json:"type,omitempty"`
 	Disabled        bool        `json:"disabled,omitempty"`
 	Inherited       bool        `json:"inherited,omitempty"`
 	Href            string      `json:"href,omitempty"`
@@ -23,7 +23,7 @@ type ArtifactDependency struct {
 type AgentRequirement struct {
 	Id         string      `json:"id,omitempty"`
 	Name       string      `json:"name,omitempty"`
-	Type_      string      `json:"type,omitempty"`
+	Type       string      `json:"type,omitempty"`
 	Disabled   bool        `json:"disabled,omitempty"`
 	Inherited  bool        `json:"inherited,omitempty"`
 	Href       string      `json:"href,omitempty"`
@@ -49,7 +49,7 @@ type BuildType struct {
 	InternalId            string                `json:"internalId,omitempty"`
 	Name                  string                `json:"name,omitempty"`
 	TemplateFlag          bool                  `json:"templateFlag,omitempty"`
-	Type_                 string                `json:"type,omitempty"`
+	Type                  string                `json:"type,omitempty"`
 	Paused                bool                  `json:"paused,omitempty"`
 	Uuid                  string                `json:"uuid,omitempty"`
 	Description           string                `json:"description,omitempty"`
@@ -95,7 +95,7 @@ type BuildTypes struct {
 type Feature struct {
 	Id         string      `json:"id,omitempty"`
 	Name       string      `json:"name,omitempty"`
-	Type_      string      `json:"type,omitempty"`
+	Type       string      `json:"type,omitempty"`
 	Disabled   bool        `json:"disabled,omitempty"`
 	Inherited  bool        `json:"inherited,omitempty"`
 	Href       string      `json:"href,omitempty"`
@@ -130,7 +130,7 @@ type SnapshotDependencies struct {
 type SnapshotDependency struct {
 	Id              string      `json:"id,omitempty"`
 	Name            string      `json:"name,omitempty"`
-	Type_           string      `json:"type,omitempty"`
+	Type            string      `json:"type,omitempty"`
 	Disabled        bool        `json:"disabled,omitempty"`
 	Inherited       bool        `json:"inherited,omitempty"`
 	Href            string      `json:"href,omitempty"`
@@ -142,7 +142,7 @@ type SnapshotDependency struct {
 type Step struct {
 	Id         string      `json:"id,omitempty"`
 	Name       string      `json:"name,omitempty"`
-	Type_      string      `json:"type,omitempty"`
+	Type       string      `json:"type,omitempty"`
 	Disabled   bool        `json:"disabled,omitempty"`
 	Inherited  bool        `json:"inherited,omitempty"`
 	Href       string      `json:"href,omitempty"`
@@ -159,7 +159,7 @@ type Steps struct {
 type Trigger struct {
 	Id                 string                     `json:"id,omitempty"`
 	Name               string                     `json:"name,omitempty"`
-	Type_              string                     `json:"type,omitempty"`
+	Type               string                     `json:"type,omitempty"`
 	Disabled           bool                       `json:"disabled,omitempty"`
 	Inherited          bool                       `json:"inherited,omitempty"`
 	Href               string                     `json:"href,omitempty"`

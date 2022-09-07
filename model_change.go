@@ -21,7 +21,7 @@ type Change struct {
 	WebUrl                 string                  `json:"webUrl,omitempty"`
 	Comment                string                  `json:"comment,omitempty"`
 	User                   *User                   `json:"user,omitempty"`
-	Type_                  string                  `json:"type,omitempty"`
+	Type                   string                  `json:"type,omitempty"`
 	SnapshotDependencyLink *SnapshotDependencyLink `json:"snapshotDependencyLink,omitempty"`
 	Files                  *FileChanges            `json:"files,omitempty"`
 	VcsRootInstance        *VcsRootInstance        `json:"vcsRootInstance,omitempty"`

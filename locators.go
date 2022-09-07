@@ -110,34 +110,27 @@ type BuildQueueLocator struct {
 	User string `json:"user,omitempty"`
 }
 
+func BuildTypeLocatorID(id string) BuildTypeLocator {
+	return BuildTypeLocator{Id: id}
+}
+
 // Represents a locator string for filtering BuildType entities.
 type BuildTypeLocator struct {
-	// Project (direct or indirect parent) locator.
-	AffectedProject string `json:"affectedProject,omitempty"`
-	// Build locator.
-	Build string `json:"build,omitempty"`
-	// For paginated calls, how many entities to return per page.
-	Count      int32  `json:"count,omitempty"`
-	Id         string `json:"id,omitempty"`
-	InternalId string `json:"internalId,omitempty"`
-	// Supply multiple locators and return a union of the results.
-	Item string `json:"item,omitempty"`
-	Name string `json:"name,omitempty"`
-	// Is paused.
-	Paused bool `json:"paused,omitempty"`
-	// Project (direct parent) locator.
-	Project string `json:"project,omitempty"`
-	// For paginated calls, from which entity to start rendering the page.
-	Start int32 `json:"start,omitempty"`
-	// Base template locator.
-	Template string `json:"template,omitempty"`
-	// Is a template.
-	TemplateFlag bool   `json:"templateFlag,omitempty"`
-	Uuid         string `json:"uuid,omitempty"`
-	// VCS root locator.
-	VcsRoot string `json:"vcsRoot,omitempty"`
-	// VCS root instance locator.
-	VcsRootInstance string `json:"vcsRootInstance,omitempty"`
+	AffectedProject string `json:"affectedProject,omitempty"` // Project (direct or indirect parent) locator.
+	Build           string `json:"build,omitempty"`           // Build locator.
+	Count           int32  `json:"count,omitempty"`           // For paginated calls, how many entities to return per page.
+	Id              string `json:"id,omitempty"`
+	InternalId      string `json:"internalId,omitempty"`
+	Item            string `json:"item,omitempty"` // Supply multiple locators and return a union of the results.
+	Name            string `json:"name,omitempty"`
+	Paused          bool   `json:"paused,omitempty"`       // Is paused.
+	Project         string `json:"project,omitempty"`      // Project (direct parent) locator.
+	Start           int32  `json:"start,omitempty"`        // For paginated calls, from which entity to start rendering the page.
+	Template        string `json:"template,omitempty"`     // Base template locator.
+	TemplateFlag    bool   `json:"templateFlag,omitempty"` // Is a template.
+	UUID            string `json:"uuid,omitempty"`
+	VcsRoot         string `json:"vcsRoot,omitempty"`         // VCS root locator.
+	VcsRootInstance string `json:"vcsRootInstance,omitempty"` // VCS root instance locator.
 }
 
 // Represents a locator string for filtering Branch entities.
@@ -178,7 +171,7 @@ type VcsRootInstanceLocator struct {
 	// For paginated calls, from which entity to start rendering the page.
 	Start int32 `json:"start,omitempty"`
 	// Type of VCS (e.g. jetbrains.git).
-	Type_ string `json:"type,omitempty"`
+	Type string `json:"type,omitempty"`
 	// VCS root locator.
 	VcsRoot string `json:"vcsRoot,omitempty"`
 	// Is used for versioned settings.
@@ -267,8 +260,8 @@ type VcsRootLocator struct {
 	// For paginated calls, from which entity to start rendering the page.
 	Start int32 `json:"start,omitempty"`
 	// Type of VCS (e.g. jetbrains.git).
-	Type_ string `json:"type,omitempty"`
-	Uuid  string `json:"uuid,omitempty"`
+	Type string `json:"type,omitempty"`
+	Uuid string `json:"uuid,omitempty"`
 }
 
 // Represents a locator string for filtering CloudInstance entities.
@@ -331,8 +324,8 @@ type InvestigationLocator struct {
 	Start int32  `json:"start,omitempty"`
 	State string `json:"state,omitempty"`
 	// Test locator.
-	Test  string `json:"test,omitempty"`
-	Type_ string `json:"type,omitempty"`
+	Test string `json:"test,omitempty"`
+	Type string `json:"type,omitempty"`
 }
 
 // Represents a locator string for filtering ProblemOccurrence entities.
@@ -359,7 +352,7 @@ type ProblemOccurrenceLocator struct {
 	Problem string `json:"problem,omitempty"`
 	// For paginated calls, from which entity to start rendering the page.
 	Start int32  `json:"start,omitempty"`
-	Type_ string `json:"type,omitempty"`
+	Type  string `json:"type,omitempty"`
 }
 
 // Represents a locator string for filtering Problem entities.
@@ -385,7 +378,7 @@ type ProblemLocator struct {
 	LookupLimit int32 `json:"lookupLimit,omitempty"`
 	// For paginated calls, from which entity to start rendering the page.
 	Start int32  `json:"start,omitempty"`
-	Type_ string `json:"type,omitempty"`
+	Type  string `json:"type,omitempty"`
 }
 
 // Represents a locator string for filtering Test entities.
@@ -466,8 +459,8 @@ type MuteLocator struct {
 	Reporter   string `json:"reporter,omitempty"`
 	Resolution string `json:"resolution,omitempty"`
 	// Test locator.
-	Test  string `json:"test,omitempty"`
-	Type_ string `json:"type,omitempty"`
+	Test string `json:"test,omitempty"`
+	Type string `json:"type,omitempty"`
 	// yyyyMMddTHHmmss+ZZZZ
 	UnmuteDate time.Time `json:"unmuteDate,omitempty"`
 }

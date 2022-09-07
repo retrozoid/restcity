@@ -173,7 +173,7 @@ func (p *Tags) Add(v ...Tag) {
 
 // Represents the user/trigger/dependency which caused this build to start.
 type TriggeredBy struct {
-	Type_       string      `json:"type,omitempty"`
+	Type        string      `json:"type,omitempty"`
 	Details     string      `json:"details,omitempty"`
 	Date        string      `json:"date,omitempty"`
 	DisplayText string      `json:"displayText,omitempty"`

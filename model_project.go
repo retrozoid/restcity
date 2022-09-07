@@ -60,7 +60,7 @@ type ProjectFeatures struct {
 type ProjectFeature struct {
 	Id         string      `json:"id,omitempty"`
 	Name       string      `json:"name,omitempty"`
-	Type_      string      `json:"type,omitempty"`
+	Type       string      `json:"type,omitempty"`
 	Disabled   bool        `json:"disabled,omitempty"`
 	Inherited  bool        `json:"inherited,omitempty"`
 	Href       string      `json:"href,omitempty"`

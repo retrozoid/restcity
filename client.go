@@ -105,6 +105,7 @@ func (c Configuration) NewHTTPClient() *http.Client {
 type ClientImpl struct {
 	BuildAPI      BuildAPI
 	BuildQueueAPI BuildQueueAPI
+	BuildTypeAPI  BuildTypeAPI
 	RootAPI       RootAPI
 	ProjectAPI    ProjectAPI
 }
@@ -114,6 +115,7 @@ func New(c Configuration) ClientImpl {
 	return ClientImpl{
 		BuildAPI:      BuildAPI{HTTPClient: httpClient},
 		BuildQueueAPI: BuildQueueAPI{HTTPClient: httpClient},
+		BuildTypeAPI:  BuildTypeAPI{HTTPClient: httpClient},
 		RootAPI:       RootAPI{HTTPClient: httpClient},
 		ProjectAPI:    ProjectAPI{HTTPClient: httpClient},
 	}

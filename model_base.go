@@ -30,7 +30,7 @@ type Items struct {
 
 // Represents a list of URLs.
 type Link struct {
-	Type_       string `json:"type,omitempty"`
+	Type        string `json:"type,omitempty"`
 	Url         string `json:"url,omitempty"`
 	RelativeUrl string `json:"relativeUrl,omitempty"`
 }
@@ -69,7 +69,7 @@ type Property struct {
 	Name      string     `json:"name,omitempty"`
 	Value     string     `json:"value,omitempty"`
 	Inherited bool       `json:"inherited,omitempty"`
-	Type_     *ModelType `json:"type,omitempty"`
+	Type      *ModelType `json:"type,omitempty"`
 }
 
 // Represents a list of RelatedEntity entities.
@@ -80,7 +80,7 @@ type RelatedEntities struct {
 
 // Represents a related entity.
 type RelatedEntity struct {
-	Type_      string     `json:"type,omitempty"`
+	Type       string     `json:"type,omitempty"`
 	Unknown    bool       `json:"unknown,omitempty"`
 	InternalId string     `json:"internalId,omitempty"`
 	Text       string     `json:"text,omitempty"`
