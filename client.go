@@ -4,6 +4,7 @@ package trac
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -93,13 +94,13 @@ type ClientImpl struct {
 }
 
 type roundTripper struct {
-	baseURL *url.URL
+	baseURL string
 	auth    Authorization
 	retry   int
 }
 
 func NewHTTPClient(c Configuration) *http.Client {
-	u, _ := url.Parse(strings.TrimRight(c.ServerURL, "/") + c.auth.Prefix())
+	u := strings.TrimRight(c.ServerURL, "/") + c.auth.Prefix()
 	return &http.Client{
 		Transport: roundTripper{
 			baseURL: u,
@@ -121,8 +122,12 @@ func New(c Configuration) ClientImpl {
 func (r roundTripper) RoundTrip(req *http.Request) (response *http.Response, err error) {
 	r.auth.Do(req)
 
-	u := r.baseURL.JoinPath(req.URL.Path)
+	u, err := url.Parse(r.baseURL + req.URL.Path)
+	if err != nil {
+		return nil, err
+	}
 	u.RawQuery = req.URL.RawQuery
+	u.RawFragment = req.URL.RawFragment
 	req.URL = u
 
 	var buf []byte
@@ -215,6 +220,10 @@ func (r Request) Do(client *http.Client, method string, result interface{}, prod
 	response, err := client.Do(req)
 	if err != nil {
 		return err
+	}
+	if response.StatusCode != http.StatusOK {
+		text, _ := nopCloserRead(response.Body)
+		return errors.New(string(text))
 	}
 
 	if result != nil {
