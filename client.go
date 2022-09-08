@@ -83,7 +83,6 @@ func (t TokenAuth) Prefix() string {
 }
 
 func (t TokenAuth) Do(r *http.Request) {
-	// if strings.HasPrefix(r.RequestURI,
 	r.Header.Set("Authorization", "Bearer "+string(t))
 }
 
@@ -129,7 +128,7 @@ func (r roundTripper) RoundTrip(req *http.Request) (response *http.Response, err
 		if err != nil {
 			return nil, err
 		}
-		r.auth.Do(req) // authorization only for baseURL
+		r.auth.Do(req) // authorization for baseURL only
 	}
 
 	var buf []byte
