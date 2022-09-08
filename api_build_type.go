@@ -12,7 +12,7 @@ type BuildTypeAPI struct {
 // GetBuildType Get build configuration matching the locator.
 func (t BuildTypeAPI) GetBuildType(btLocator BuildTypeLocator, fields string) (value BuildTypes, err error) {
 	req := Request{
-		Path:   "/app/rest/buildTypes/" + locatorString(btLocator),
+		Path:   "/app/rest/buildTypes/" + EncodeLocator(btLocator),
 		Values: Values{"fields": fields},
 	}
 	err = req.Get(t.HTTPClient, &value)
@@ -21,14 +21,14 @@ func (t BuildTypeAPI) GetBuildType(btLocator BuildTypeLocator, fields string) (v
 
 // DeleteBuildType Delete build configuration matching the locator.
 func (t BuildTypeAPI) DeleteBuildType(btLocator BuildTypeLocator) (err error) {
-	err = Request{Path: fmt.Sprintf("/app/rest/buildTypes/", locatorString(btLocator))}.Delete(t.HTTPClient)
+	err = Request{Path: fmt.Sprintf("/app/rest/buildTypes/%s", EncodeLocator(btLocator))}.Delete(t.HTTPClient)
 	return
 }
 
 // GetBuildTypeBuildTags Get tags of builds of the matching build configuration.
 func (t BuildTypeAPI) GetBuildTypeBuildTags(btLocator BuildTypeLocator, field string) (value Tags, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/buildTags", locatorString(btLocator)),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/buildTags", EncodeLocator(btLocator)),
 		Values: Values{"field": field},
 	}
 	err = req.Get(t.HTTPClient, &value)
@@ -38,7 +38,7 @@ func (t BuildTypeAPI) GetBuildTypeBuildTags(btLocator BuildTypeLocator, field st
 // GetBuildParameterValueOfBuildType Get value of build parameter.
 func (t BuildTypeAPI) GetBuildParameterValueOfBuildType(btLocator BuildTypeLocator, name string) (value string, err error) {
 	req := Request{
-		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/parameters/%s/value", locatorString(btLocator), name),
+		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/parameters/%s/value", EncodeLocator(btLocator), name),
 		Consumer: Coders.String,
 	}
 	err = req.Get(t.HTTPClient, &value)
@@ -48,7 +48,7 @@ func (t BuildTypeAPI) GetBuildParameterValueOfBuildType(btLocator BuildTypeLocat
 // UpdateBuildParameterValueOfBuildType Update value of build parameter.
 func (t BuildTypeAPI) UpdateBuildParameterValueOfBuildType(btLocator BuildTypeLocator, name string, data string) (value string, err error) {
 	req := Request{
-		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/parameters/%s/value", locatorString(btLocator), name),
+		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/parameters/%s/value", EncodeLocator(btLocator), name),
 		Data:     data,
 		Consumer: Coders.String,
 	}
@@ -59,7 +59,7 @@ func (t BuildTypeAPI) UpdateBuildParameterValueOfBuildType(btLocator BuildTypeLo
 // GetAllVcsRootsOfBuildType Get all VCS roots of the matching build configuration.
 func (t BuildTypeAPI) GetAllVcsRootsOfBuildType(btLocator BuildTypeLocator, fields string) (value VcsRootEntries, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/vcs-root-entries", locatorString(btLocator)),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/vcs-root-entries", EncodeLocator(btLocator)),
 		Values: Values{"fields": fields},
 	}
 	err = req.Get(t.HTTPClient, &value)
@@ -69,7 +69,7 @@ func (t BuildTypeAPI) GetAllVcsRootsOfBuildType(btLocator BuildTypeLocator, fiel
 // AddVcsRootToBuildType Add a VCS root to the matching build.
 func (t BuildTypeAPI) AddVcsRootToBuildType(btLocator BuildTypeLocator, data VcsRootEntry, fields string) (value VcsRootEntry, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/vcs-root-entries", locatorString(btLocator)),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/vcs-root-entries", EncodeLocator(btLocator)),
 		Values: Values{"fields": fields},
 		Data:   data,
 	}
@@ -80,7 +80,7 @@ func (t BuildTypeAPI) AddVcsRootToBuildType(btLocator BuildTypeLocator, data Vcs
 // ReplaceAllVcsRoots Update all VCS roots of the matching build configuration.
 func (t BuildTypeAPI) ReplaceAllVcsRoots(btLocator BuildTypeLocator, data VcsRootEntries, fields string) (value VcsRootEntries, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/vcs-root-entries", locatorString(btLocator)),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/vcs-root-entries", EncodeLocator(btLocator)),
 		Values: Values{"fields": fields},
 		Data:   data,
 	}
@@ -91,7 +91,7 @@ func (t BuildTypeAPI) ReplaceAllVcsRoots(btLocator BuildTypeLocator, data VcsRoo
 // GetArtifactDependency Get an artifact dependency of the matching build configuration.
 func (t BuildTypeAPI) GetArtifactDependency(btLocator BuildTypeLocator, artifactDepLocator string, fields string) (value ArtifactDependency, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/artifact-dependencies/%s", locatorString(btLocator), artifactDepLocator),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/artifact-dependencies/%s", EncodeLocator(btLocator), artifactDepLocator),
 		Values: Values{"fields": fields},
 	}
 	err = req.Get(t.HTTPClient, &value)
@@ -101,7 +101,7 @@ func (t BuildTypeAPI) GetArtifactDependency(btLocator BuildTypeLocator, artifact
 // ReplaceArtifactDependency Update an artifact dependency of the matching build configuration.
 func (t BuildTypeAPI) ReplaceArtifactDependency(btLocator BuildTypeLocator, artifactDepLocator string, fields string, data ArtifactDependency) (value ArtifactDependency, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/artifact-dependencies/%s", locatorString(btLocator), artifactDepLocator),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/artifact-dependencies/%s", EncodeLocator(btLocator), artifactDepLocator),
 		Values: Values{"fields": fields},
 		Data:   data,
 	}
@@ -111,22 +111,22 @@ func (t BuildTypeAPI) ReplaceArtifactDependency(btLocator BuildTypeLocator, arti
 
 // DeleteArtifactDependency Remove an artifact dependency from the matching build configuration.
 func (t BuildTypeAPI) DeleteArtifactDependency(btLocator BuildTypeLocator, artifactDepLocator string) (err error) {
-	req := Request{Path: fmt.Sprintf("/app/rest/buildTypes/%s/artifact-dependencies/%s", locatorString(btLocator), artifactDepLocator)}
+	req := Request{Path: fmt.Sprintf("/app/rest/buildTypes/%s/artifact-dependencies/%s", EncodeLocator(btLocator), artifactDepLocator)}
 	err = req.Delete(t.HTTPClient)
 	return
 }
 
 // GetFilesListForSubpathOfBuildType List files under this path.
 func (t BuildTypeAPI) GetFilesListForSubpathOfBuildType(
+	btLocator BuildTypeLocator,
 	path string,
 	basePath string,
 	locator string,
 	fields string,
-	btLocator BuildTypeLocator,
 	resolveParameters bool,
 ) (value Files, err error) {
 	req := Request{
-		Path: fmt.Sprintf("/app/rest/buildTypes/%s/vcs/files/latest/%s", locatorString(btLocator), path),
+		Path: fmt.Sprintf("/app/rest/buildTypes/%s/vcs/files/latest/%s", EncodeLocator(btLocator), path),
 		Values: Values{
 			"basePath":          basePath,
 			"locator":           locator,
@@ -141,7 +141,7 @@ func (t BuildTypeAPI) GetFilesListForSubpathOfBuildType(
 // GetBuildStepSetting Get the setting of a build step of the matching build configuration.
 func (t BuildTypeAPI) GetBuildStepSetting(btLocator BuildTypeLocator, stepId string, fieldName string) (value string, err error) {
 	req := Request{
-		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/steps/%s/%s", locatorString(btLocator), stepId, fieldName),
+		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/steps/%s/%s", EncodeLocator(btLocator), stepId, fieldName),
 		Consumer: Coders.String,
 	}
 	err = req.Get(t.HTTPClient, &value)
@@ -151,7 +151,7 @@ func (t BuildTypeAPI) GetBuildStepSetting(btLocator BuildTypeLocator, stepId str
 // SetBuildStepParameter Update a parameter of a build step of the matching build configuration.
 func (t BuildTypeAPI) SetBuildStepParameter(btLocator BuildTypeLocator, stepId string, fieldName string, data string) (value string, err error) {
 	req := Request{
-		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/steps/%s/%s", locatorString(btLocator), stepId, fieldName),
+		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/steps/%s/%s", EncodeLocator(btLocator), stepId, fieldName),
 		Consumer: Coders.String,
 		Data:     data,
 	}
@@ -162,7 +162,7 @@ func (t BuildTypeAPI) SetBuildStepParameter(btLocator BuildTypeLocator, stepId s
 // GetFileMetadataOfBuildType Get metadata of specific file.
 func (t BuildTypeAPI) GetFileMetadataOfBuildType(path, fields string, btLocator BuildTypeLocator, resolveParameters bool) (value File, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/vcs/files/latest/metadata%s", locatorString(btLocator), path),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/vcs/files/latest/metadata%s", EncodeLocator(btLocator), path),
 		Values: Values{"fields": fields},
 	}
 	err = req.Get(t.HTTPClient, &value)
@@ -172,7 +172,7 @@ func (t BuildTypeAPI) GetFileMetadataOfBuildType(path, fields string, btLocator 
 // ReplaceBuildStep Replace a build step of the matching build configuration.
 func (t BuildTypeAPI) ReplaceBuildStep(btLocator BuildTypeLocator, stepId string, fields string, data Step) (value Step, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/steps/%s", locatorString(btLocator), stepId),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/steps/%s", EncodeLocator(btLocator), stepId),
 		Values: Values{"fields": fields},
 		Data:   data,
 	}
@@ -182,7 +182,7 @@ func (t BuildTypeAPI) ReplaceBuildStep(btLocator BuildTypeLocator, stepId string
 
 // DeleteBuildStep Delete a build step of the matching build configuration.
 func (t BuildTypeAPI) DeleteBuildStep(btLocator BuildTypeLocator, stepId string) (err error) {
-	req := Request{Path: fmt.Sprintf("/app/rest/buildTypes/%s/steps/%s", locatorString(btLocator), stepId)}
+	req := Request{Path: fmt.Sprintf("/app/rest/buildTypes/%s/steps/%s", EncodeLocator(btLocator), stepId)}
 	err = req.Delete(t.HTTPClient)
 	return
 }
@@ -190,7 +190,7 @@ func (t BuildTypeAPI) DeleteBuildStep(btLocator BuildTypeLocator, stepId string)
 // GetBuildStep Get a build step of the matching build configuration.
 func (t BuildTypeAPI) GetBuildStep(btLocator BuildTypeLocator, stepId string, fields string) (value Step, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/steps/%s", locatorString(btLocator), stepId),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/steps/%s", EncodeLocator(btLocator), stepId),
 		Values: Values{"fields": fields},
 	}
 	err = req.Get(t.HTTPClient, &value)
@@ -200,7 +200,7 @@ func (t BuildTypeAPI) GetBuildStep(btLocator BuildTypeLocator, stepId string, fi
 // GetAllBuildStepParameters Get all parameters of a build step of the matching build configuration.
 func (t BuildTypeAPI) GetAllBuildStepParameters(btLocator BuildTypeLocator, stepId string, fields string) (value Properties, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/steps/%s/parameters", locatorString(btLocator), stepId),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/steps/%s/parameters", EncodeLocator(btLocator), stepId),
 		Values: Values{"fields": fields},
 	}
 	err = req.Get(t.HTTPClient, &value)
@@ -210,7 +210,7 @@ func (t BuildTypeAPI) GetAllBuildStepParameters(btLocator BuildTypeLocator, step
 // DeleteBuildStepParameters Update a parameter of a build step of the matching build configuration.
 func (t BuildTypeAPI) DeleteBuildStepParameters(btLocator BuildTypeLocator, stepId string, data Properties, fields string) (value Properties, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/steps/%s/parameters", locatorString(btLocator), stepId),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/steps/%s/parameters", EncodeLocator(btLocator), stepId),
 		Values: Values{"fields": fields},
 		Data:   data,
 	}
@@ -221,7 +221,7 @@ func (t BuildTypeAPI) DeleteBuildStepParameters(btLocator BuildTypeLocator, step
 // GetTrigger Get a trigger of the matching build configuration.
 func (t BuildTypeAPI) GetTrigger(btLocator BuildTypeLocator, triggerLocator string, fields string) (value Trigger, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/triggers/%s", locatorString(btLocator), triggerLocator),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/triggers/%s", EncodeLocator(btLocator), triggerLocator),
 		Values: Values{"fields": fields},
 	}
 	err = req.Get(t.HTTPClient, &value)
@@ -231,7 +231,7 @@ func (t BuildTypeAPI) GetTrigger(btLocator BuildTypeLocator, triggerLocator stri
 // ReplaceTrigger Update a trigger of the matching build configuration.
 func (t BuildTypeAPI) ReplaceTrigger(btLocator BuildTypeLocator, triggerLocator string, fields string, data Trigger) (value Trigger, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/triggers/%s", locatorString(btLocator), triggerLocator),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/triggers/%s", EncodeLocator(btLocator), triggerLocator),
 		Values: Values{"fields": fields},
 		Data:   data,
 	}
@@ -241,7 +241,7 @@ func (t BuildTypeAPI) ReplaceTrigger(btLocator BuildTypeLocator, triggerLocator 
 
 // DeleteTrigger Delete a trigger of the matching build configuration.
 func (t BuildTypeAPI) DeleteTrigger(btLocator BuildTypeLocator, triggerLocator string) (err error) {
-	req := Request{Path: fmt.Sprintf("/app/rest/buildTypes/%s/triggers/%s", locatorString(btLocator), triggerLocator)}
+	req := Request{Path: fmt.Sprintf("/app/rest/buildTypes/%s/triggers/%s", EncodeLocator(btLocator), triggerLocator)}
 	err = req.Delete(t.HTTPClient)
 	return
 }
@@ -249,7 +249,7 @@ func (t BuildTypeAPI) DeleteTrigger(btLocator BuildTypeLocator, triggerLocator s
 // GetAgentRequirementParameter Get a setting of an agent requirement of the matching build configuration.
 func (t BuildTypeAPI) GetAgentRequirementParameter(btLocator BuildTypeLocator, agentRequirementLocator, fieldName string) (value string, err error) {
 	req := Request{
-		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/agent-requirements/%s/%s", locatorString(btLocator), agentRequirementLocator, fieldName),
+		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/agent-requirements/%s/%s", EncodeLocator(btLocator), agentRequirementLocator, fieldName),
 		Consumer: Coders.String,
 	}
 	err = req.Get(t.HTTPClient, &value)
@@ -259,7 +259,7 @@ func (t BuildTypeAPI) GetAgentRequirementParameter(btLocator BuildTypeLocator, a
 // SetAgentRequirementParameter Update a parameter of an agent requirement of the matching build configuration.
 func (t BuildTypeAPI) SetAgentRequirementParameter(btLocator BuildTypeLocator, agentRequirementLocator string, fieldName string, data string) (value string, err error) {
 	req := Request{
-		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/agent-requirements/%s/%s", locatorString(btLocator), agentRequirementLocator, fieldName),
+		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/agent-requirements/%s/%s", EncodeLocator(btLocator), agentRequirementLocator, fieldName),
 		Consumer: Coders.String,
 		Data:     data,
 	}
@@ -269,7 +269,7 @@ func (t BuildTypeAPI) SetAgentRequirementParameter(btLocator BuildTypeLocator, a
 
 // DeleteAgentRequirement Remove an agent requirement of the matching build configuration.
 func (t BuildTypeAPI) DeleteAgentRequirement(btLocator BuildTypeLocator, agentRequirementLocator string) (err error) {
-	req := Request{Path: fmt.Sprintf("/app/rest/buildTypes/%s/agent-requirements/%s", locatorString(btLocator), agentRequirementLocator)}
+	req := Request{Path: fmt.Sprintf("/app/rest/buildTypes/%s/agent-requirements/%s", EncodeLocator(btLocator), agentRequirementLocator)}
 	err = req.Delete(t.HTTPClient)
 	return
 }
@@ -277,7 +277,7 @@ func (t BuildTypeAPI) DeleteAgentRequirement(btLocator BuildTypeLocator, agentRe
 // GetAgentRequirement Get an agent requirement of the matching build configuration.
 func (t BuildTypeAPI) GetAgentRequirement(btLocator BuildTypeLocator, agentRequirementLocator string, fields string) (value AgentRequirement, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/agent-requirements/%s", locatorString(btLocator), agentRequirementLocator),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/agent-requirements/%s", EncodeLocator(btLocator), agentRequirementLocator),
 		Values: Values{"fields": fields},
 	}
 	err = req.Get(t.HTTPClient, &value)
@@ -287,7 +287,7 @@ func (t BuildTypeAPI) GetAgentRequirement(btLocator BuildTypeLocator, agentRequi
 // ReplaceAgentRequirement Update an agent requirement of the matching build configuration.
 func (t BuildTypeAPI) ReplaceAgentRequirement(btLocator BuildTypeLocator, agentRequirementLocator string, fields string, data AgentRequirement) (value AgentRequirement, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/agent-requirements/%s", locatorString(btLocator), agentRequirementLocator),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/agent-requirements/%s", EncodeLocator(btLocator), agentRequirementLocator),
 		Values: Values{"fields": fields},
 		Data:   data,
 	}
@@ -298,7 +298,7 @@ func (t BuildTypeAPI) ReplaceAgentRequirement(btLocator BuildTypeLocator, agentR
 // GetAllInvestigationsOfBuildType Get all investigations of the matching build configuration.
 func (t BuildTypeAPI) GetAllInvestigationsOfBuildType(btLocator BuildTypeLocator, fields string) (value Investigations, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/investigations", locatorString(btLocator)),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/investigations", EncodeLocator(btLocator)),
 		Values: Values{"fields": fields},
 	}
 	err = req.Get(t.HTTPClient, &value)
@@ -308,7 +308,7 @@ func (t BuildTypeAPI) GetAllInvestigationsOfBuildType(btLocator BuildTypeLocator
 // GetBuildParameterOfBuildType Get build parameter.
 func (t BuildTypeAPI) GetBuildParameterOfBuildType(btLocator BuildTypeLocator, name string, fields string) (value Property, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/parameters/%s", locatorString(btLocator), name),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/parameters/%s", EncodeLocator(btLocator), name),
 		Values: Values{"fields": fields},
 	}
 	err = req.Get(t.HTTPClient, &value)
@@ -318,7 +318,7 @@ func (t BuildTypeAPI) GetBuildParameterOfBuildType(btLocator BuildTypeLocator, n
 // UpdateBuildParameterOfBuildType Update build parameter.
 func (t BuildTypeAPI) UpdateBuildParameterOfBuildType(btLocator BuildTypeLocator, name string, data Property, fields string) (value Property, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/parameters/%s", locatorString(btLocator), name),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/parameters/%s", EncodeLocator(btLocator), name),
 		Values: Values{"fields": fields},
 		Data:   data,
 	}
@@ -328,7 +328,7 @@ func (t BuildTypeAPI) UpdateBuildParameterOfBuildType(btLocator BuildTypeLocator
 
 // DeleteBuildParameterOfBuildType Delete build parameter.
 func (t BuildTypeAPI) DeleteBuildParameterOfBuildType(btLocator BuildTypeLocator, name string) (err error) {
-	req := Request{Path: fmt.Sprintf("/app/rest/buildTypes/%s/parameters/%s", locatorString(btLocator), name)}
+	req := Request{Path: fmt.Sprintf("/app/rest/buildTypes/%s/parameters/%s", EncodeLocator(btLocator), name)}
 	err = req.Delete(t.HTTPClient)
 	return
 }
@@ -338,7 +338,7 @@ func (t BuildTypeAPI) GetAllBuildTypes(locator BuildTypeLocator, fields string) 
 	req := Request{
 		Path: "/app/rest/buildTypes",
 		Values: Values{
-			"locator": locatorString(locator),
+			"locator": EncodeLocator(locator),
 			"fields":  fields,
 		},
 	}
@@ -360,7 +360,7 @@ func (t BuildTypeAPI) CreateBuildType(data BuildType, fields string) (value Buil
 // AddArtifactDependencyToBuildType Add an artifact dependency to the matching build configuration.
 func (t BuildTypeAPI) AddArtifactDependencyToBuildType(btLocator BuildTypeLocator, fields string, data ArtifactDependency) (value ArtifactDependency, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/artifact-dependencies", locatorString(btLocator)),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/artifact-dependencies", EncodeLocator(btLocator)),
 		Values: Values{"fields": fields},
 		Data:   data,
 	}
@@ -371,7 +371,7 @@ func (t BuildTypeAPI) AddArtifactDependencyToBuildType(btLocator BuildTypeLocato
 // ReplaceAllArtifactDependencies Update all artifact dependencies of the matching build configuration.
 func (t BuildTypeAPI) ReplaceAllArtifactDependencies(btLocator BuildTypeLocator, fields string, data ArtifactDependency) (value ArtifactDependency, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/artifact-dependencies", locatorString(btLocator)),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/artifact-dependencies", EncodeLocator(btLocator)),
 		Values: Values{"fields": fields},
 		Data:   data,
 	}
@@ -382,7 +382,7 @@ func (t BuildTypeAPI) ReplaceAllArtifactDependencies(btLocator BuildTypeLocator,
 // GetAllArtifactDependencies Get all artifact dependencies of the matching build configuration.
 func (t BuildTypeAPI) GetAllArtifactDependencies(btLocator BuildTypeLocator, fields string) (value ArtifactDependencies, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/artifact-dependencies", locatorString(btLocator)),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/artifact-dependencies", EncodeLocator(btLocator)),
 		Values: Values{"fields": fields},
 	}
 	err = req.Get(t.HTTPClient, &value)
@@ -392,7 +392,7 @@ func (t BuildTypeAPI) GetAllArtifactDependencies(btLocator BuildTypeLocator, fie
 // UpdateBuildParameterSpecificationOfBuildType Update build parameter specification.
 func (t BuildTypeAPI) UpdateBuildParameterSpecificationOfBuildType(btLocator BuildTypeLocator, name string, data string) (value string, err error) {
 	req := Request{
-		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/parameters/%s/type/rawValue", locatorString(btLocator), name),
+		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/parameters/%s/type/rawValue", EncodeLocator(btLocator), name),
 		Consumer: Coders.String,
 		Data:     data,
 	}
@@ -401,9 +401,9 @@ func (t BuildTypeAPI) UpdateBuildParameterSpecificationOfBuildType(btLocator Bui
 }
 
 // GetBuildParameterSpecificationOfBuildType Get build parameter specification.
-func (t BuildTypeAPI) GetBuildParameterSpecificationOfBuildType(name string, btLocator BuildTypeLocator) (value string, err error) {
+func (t BuildTypeAPI) GetBuildParameterSpecificationOfBuildType(btLocator BuildTypeLocator, name string) (value string, err error) {
 	req := Request{
-		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/parameters/%s/type/rawValue", locatorString(btLocator), name),
+		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/parameters/%s/type/rawValue", EncodeLocator(btLocator), name),
 		Consumer: Coders.String,
 	}
 	err = req.Get(t.HTTPClient, &value)
@@ -413,7 +413,7 @@ func (t BuildTypeAPI) GetBuildParameterSpecificationOfBuildType(name string, btL
 // GetVcsRootCheckoutRules Get checkout rules of a VCS root of the matching build configuration.
 func (t BuildTypeAPI) GetVcsRootCheckoutRules(btLocator BuildTypeLocator, vcsRootLocator string) (value string, err error) {
 	req := Request{
-		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/vcs-root-entries/%s/checkout-rules", locatorString(btLocator), vcsRootLocator),
+		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/vcs-root-entries/%s/checkout-rules", EncodeLocator(btLocator), vcsRootLocator),
 		Consumer: Coders.String,
 	}
 	err = req.Get(t.HTTPClient, &value)
@@ -423,7 +423,7 @@ func (t BuildTypeAPI) GetVcsRootCheckoutRules(btLocator BuildTypeLocator, vcsRoo
 // UpdateBuildTypeVcsRootCheckoutRules Update checkout rules of a VCS root of the matching build configuration.
 func (t BuildTypeAPI) UpdateBuildTypeVcsRootCheckoutRules(btLocator BuildTypeLocator, vcsRootLocator string, data string) (value string, err error) {
 	req := Request{
-		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/vcs-root-entries/%s/checkout-rules", locatorString(btLocator), vcsRootLocator),
+		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/vcs-root-entries/%s/checkout-rules", EncodeLocator(btLocator), vcsRootLocator),
 		Consumer: Coders.String,
 		Data:     data,
 	}
@@ -434,7 +434,7 @@ func (t BuildTypeAPI) UpdateBuildTypeVcsRootCheckoutRules(btLocator BuildTypeLoc
 // GetAllBranchesOfBuildType Get all branches of the matching build configuration.
 func (t BuildTypeAPI) GetAllBranchesOfBuildType(btLocator BuildTypeLocator, locator string, fields string) (value Branches, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/branches", locatorString(btLocator)),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/branches", EncodeLocator(btLocator)),
 		Values: Values{"fields": fields, "locator": locator},
 	}
 	err = req.Get(t.HTTPClient, &value)
@@ -444,7 +444,7 @@ func (t BuildTypeAPI) GetAllBranchesOfBuildType(btLocator BuildTypeLocator, loca
 // GetTriggerParameter Get a parameter of a trigger of the matching build configuration.
 func (t BuildTypeAPI) GetTriggerParameter(btLocator BuildTypeLocator, triggerLocator string, fieldName string) (value string, err error) {
 	req := Request{
-		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/triggers/%s/%s", locatorString(btLocator), triggerLocator, fieldName),
+		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/triggers/%s/%s", EncodeLocator(btLocator), triggerLocator, fieldName),
 		Consumer: Coders.String,
 	}
 	err = req.Get(t.HTTPClient, &value)
@@ -454,7 +454,7 @@ func (t BuildTypeAPI) GetTriggerParameter(btLocator BuildTypeLocator, triggerLoc
 // SetTriggerParameter Update a parameter of a trigger of the matching build configuration.
 func (t BuildTypeAPI) SetTriggerParameter(btLocator BuildTypeLocator, triggerLocator string, fieldName string, data string) (value string, err error) {
 	req := Request{
-		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/triggers/%s/%s", locatorString(btLocator), triggerLocator, fieldName),
+		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/triggers/%s/%s", EncodeLocator(btLocator), triggerLocator, fieldName),
 		Consumer: Coders.String,
 		Data:     data,
 	}
@@ -465,7 +465,7 @@ func (t BuildTypeAPI) SetTriggerParameter(btLocator BuildTypeLocator, triggerLoc
 // GetBuildTemplate Get a template of the matching build configuration.
 func (t BuildTypeAPI) GetBuildTemplate(btLocator BuildTypeLocator, templateLocator string, fields string) (value BuildType, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/templates/%s", locatorString(btLocator), templateLocator),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/templates/%s", EncodeLocator(btLocator), templateLocator),
 		Values: Values{"fields": fields},
 	}
 	err = req.Get(t.HTTPClient, &value)
@@ -475,7 +475,7 @@ func (t BuildTypeAPI) GetBuildTemplate(btLocator BuildTypeLocator, templateLocat
 // RemoveTemplate Detach a template from the matching build configuration.
 func (t BuildTypeAPI) RemoveTemplate(btLocator BuildTypeLocator, templateLocator string, inlineSettings bool) (err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/templates/%s", locatorString(btLocator), templateLocator),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/templates/%s", EncodeLocator(btLocator), templateLocator),
 		Values: Values{"inlineSettings": inlineSettings},
 	}
 	err = req.Delete(t.HTTPClient)
@@ -485,7 +485,7 @@ func (t BuildTypeAPI) RemoveTemplate(btLocator BuildTypeLocator, templateLocator
 // GetVcsRootInstancesOfBuildType Get all VCS root instances of the matching build configuration.
 func (t BuildTypeAPI) GetVcsRootInstancesOfBuildType(btLocator BuildTypeLocator, fields string) (value VcsRootInstances, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/vcsRootInstances", locatorString(btLocator)),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/vcsRootInstances", EncodeLocator(btLocator)),
 		Values: Values{"fields": fields},
 	}
 	err = req.Get(t.HTTPClient, &value)
@@ -493,9 +493,9 @@ func (t BuildTypeAPI) GetVcsRootInstancesOfBuildType(btLocator BuildTypeLocator,
 }
 
 // DownloadFileOfBuildType Download specific file.
-func (t BuildTypeAPI) DownloadFileOfBuildType(path string, btLocator BuildTypeLocator, resolveParameters bool) (value string, err error) {
+func (t BuildTypeAPI) DownloadFileOfBuildType(btLocator BuildTypeLocator, path string, resolveParameters bool) (value string, err error) {
 	req := Request{
-		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/vcs/files/latest/files%s", locatorString(btLocator), path),
+		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/vcs/files/latest/files/%s", EncodeLocator(btLocator), path),
 		Values:   Values{"resolveParameters": resolveParameters},
 		Consumer: Coders.String,
 	}
@@ -506,7 +506,7 @@ func (t BuildTypeAPI) DownloadFileOfBuildType(path string, btLocator BuildTypeLo
 // ReplaceAllTriggers Update all triggers of the matching build configuration.
 func (t BuildTypeAPI) ReplaceAllTriggers(btLocator BuildTypeLocator, fields string, data Triggers) (value Triggers, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/triggers", locatorString(btLocator)),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/triggers", EncodeLocator(btLocator)),
 		Values: Values{"fields": fields},
 		Data:   data,
 	}
@@ -517,7 +517,7 @@ func (t BuildTypeAPI) ReplaceAllTriggers(btLocator BuildTypeLocator, fields stri
 // GetAllTriggers Get all triggers of the matching build configuration.
 func (t BuildTypeAPI) GetAllTriggers(btLocator BuildTypeLocator, fields string) (value Triggers, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/triggers", locatorString(btLocator)),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/triggers", EncodeLocator(btLocator)),
 		Values: Values{"fields": fields},
 	}
 	err = req.Get(t.HTTPClient, &value)
@@ -527,7 +527,7 @@ func (t BuildTypeAPI) GetAllTriggers(btLocator BuildTypeLocator, fields string) 
 // AddTriggerToBuildType Add a trigger to the matching build configuration.
 func (t BuildTypeAPI) AddTriggerToBuildType(btLocator BuildTypeLocator, fields string, data Trigger) (value Trigger, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/triggers", locatorString(btLocator)),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/triggers", EncodeLocator(btLocator)),
 		Values: Values{"fields": fields},
 		Data:   data,
 	}
@@ -538,7 +538,7 @@ func (t BuildTypeAPI) AddTriggerToBuildType(btLocator BuildTypeLocator, fields s
 // GetBuildFeature Get a build feature of the matching build configuration.
 func (t BuildTypeAPI) GetBuildFeature(btLocator BuildTypeLocator, featureId string, fields string) (value Feature, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/features/%s", locatorString(btLocator), featureId),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/features/%s", EncodeLocator(btLocator), featureId),
 		Values: Values{"fields": fields},
 	}
 	err = req.Get(t.HTTPClient, &value)
@@ -548,7 +548,7 @@ func (t BuildTypeAPI) GetBuildFeature(btLocator BuildTypeLocator, featureId stri
 // ReplaceBuildFeature Update a build feature of the matching build configuration.
 func (t BuildTypeAPI) ReplaceBuildFeature(btLocator BuildTypeLocator, featureId string, fields string, data Feature) (value Feature, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/features/%s", locatorString(btLocator), featureId),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/features/%s", EncodeLocator(btLocator), featureId),
 		Values: Values{"fields": fields},
 		Data:   data,
 	}
@@ -559,7 +559,7 @@ func (t BuildTypeAPI) ReplaceBuildFeature(btLocator BuildTypeLocator, featureId 
 // DeleteFeatureOfBuildType Remove a build feature of the matching build configuration.
 func (t BuildTypeAPI) DeleteFeatureOfBuildType(btLocator BuildTypeLocator, featureId string) (err error) {
 	req := Request{
-		Path: fmt.Sprintf("/app/rest/buildTypes/%s/features/%s", locatorString(btLocator), featureId),
+		Path: fmt.Sprintf("/app/rest/buildTypes/%s/features/%s", EncodeLocator(btLocator), featureId),
 	}
 	err = req.Delete(t.HTTPClient)
 	return
@@ -568,7 +568,7 @@ func (t BuildTypeAPI) DeleteFeatureOfBuildType(btLocator BuildTypeLocator, featu
 // GetBuildParameterTypeOfBuildType Get type of build parameter.
 func (t BuildTypeAPI) GetBuildParameterTypeOfBuildType(btLocator BuildTypeLocator, name string) (value ModelType, err error) {
 	req := Request{
-		Path: fmt.Sprintf("/app/rest/buildTypes/%s/parameters/%s/type", locatorString(btLocator), name),
+		Path: fmt.Sprintf("/app/rest/buildTypes/%s/parameters/%s/type", EncodeLocator(btLocator), name),
 	}
 	err = req.Get(t.HTTPClient, &value)
 	return
@@ -577,7 +577,7 @@ func (t BuildTypeAPI) GetBuildParameterTypeOfBuildType(btLocator BuildTypeLocato
 // UpdateBuildParameterTypeOfBuildType Update type of build parameter.
 func (t BuildTypeAPI) UpdateBuildParameterTypeOfBuildType(btLocator BuildTypeLocator, name string, data ModelType) (value ModelType, err error) {
 	req := Request{
-		Path: fmt.Sprintf("/app/rest/buildTypes/%s/parameters/%s/type", locatorString(btLocator), name),
+		Path: fmt.Sprintf("/app/rest/buildTypes/%s/parameters/%s/type", EncodeLocator(btLocator), name),
 		Data: data,
 	}
 	err = req.Put(t.HTTPClient, &value)
@@ -587,7 +587,7 @@ func (t BuildTypeAPI) UpdateBuildParameterTypeOfBuildType(btLocator BuildTypeLoc
 // GetBuildTypeBuilds Get builds of the matching build configuration.
 func (t BuildTypeAPI) GetBuildTypeBuilds(btLocator BuildTypeLocator, fields string) (value Builds, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/builds", locatorString(btLocator)),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/builds", EncodeLocator(btLocator)),
 		Values: Values{"fields": fields},
 	}
 	err = req.Get(t.HTTPClient, &value)
@@ -597,7 +597,7 @@ func (t BuildTypeAPI) GetBuildTypeBuilds(btLocator BuildTypeLocator, fields stri
 // GetBuildTypeSettingsFile Get the settings file of the matching build configuration.
 func (t BuildTypeAPI) GetBuildTypeSettingsFile(btLocator BuildTypeLocator) (value string, err error) {
 	req := Request{
-		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/settingsFile", locatorString(btLocator)),
+		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/settingsFile", EncodeLocator(btLocator)),
 		Consumer: Coders.String,
 	}
 	err = req.Get(t.HTTPClient, &value)
@@ -607,7 +607,7 @@ func (t BuildTypeAPI) GetBuildTypeSettingsFile(btLocator BuildTypeLocator) (valu
 // GetAllSnapshotDependencies Get all snapshot dependencies of the matching build configuration.
 func (t BuildTypeAPI) GetAllSnapshotDependencies(btLocator BuildTypeLocator, fields string) (value SnapshotDependencies, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/snapshot-dependencies", locatorString(btLocator)),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/snapshot-dependencies", EncodeLocator(btLocator)),
 		Values: Values{"fields": fields},
 	}
 	err = req.Get(t.HTTPClient, &value)
@@ -617,7 +617,7 @@ func (t BuildTypeAPI) GetAllSnapshotDependencies(btLocator BuildTypeLocator, fie
 // AddSnapshotDependencyToBuildType Add a snapshot dependency to the matching build configuration.
 func (t BuildTypeAPI) AddSnapshotDependencyToBuildType(btLocator BuildTypeLocator, fields string, data SnapshotDependency) (value SnapshotDependency, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/snapshot-dependencies", locatorString(btLocator)),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/snapshot-dependencies", EncodeLocator(btLocator)),
 		Values: Values{"fields": fields},
 		Data:   data,
 	}
@@ -628,7 +628,7 @@ func (t BuildTypeAPI) AddSnapshotDependencyToBuildType(btLocator BuildTypeLocato
 // ReplaceAllSnapshotDependencies Update all snapshot dependencies of the matching build configuration.
 func (t BuildTypeAPI) ReplaceAllSnapshotDependencies(btLocator BuildTypeLocator, fields string, data SnapshotDependencies) (value SnapshotDependencies, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/snapshot-dependencies", locatorString(btLocator)),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/snapshot-dependencies", EncodeLocator(btLocator)),
 		Values: Values{"fields": fields},
 		Data:   data,
 	}
@@ -639,7 +639,7 @@ func (t BuildTypeAPI) ReplaceAllSnapshotDependencies(btLocator BuildTypeLocator,
 // GetAliases Get external IDs of the matching build configuration.
 func (t BuildTypeAPI) GetAliases(btLocator BuildTypeLocator, field string) (value Items, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/aliases", locatorString(btLocator)),
+		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/aliases", EncodeLocator(btLocator)),
 		Values: Values{"field": field},
 	}
 	err = req.Get(t.HTTPClient, &value)
@@ -647,9 +647,9 @@ func (t BuildTypeAPI) GetAliases(btLocator BuildTypeLocator, field string) (valu
 }
 
 // GetZippedFileOfBuildType Get specific file zipped.
-func (t BuildTypeAPI) GetZippedFileOfBuildType(path string, basePath string, locator string, name string, btLocator BuildTypeLocator, resolveParameters bool) (value string, err error) {
+func (t BuildTypeAPI) GetZippedFileOfBuildType(btLocator BuildTypeLocator, path string, basePath string, locator string, name string, resolveParameters bool) (value string, err error) {
 	req := Request{
-		Path: fmt.Sprintf("/app/rest/buildTypes/%s/vcs/files/latest/archived%s", locatorString(btLocator), path),
+		Path: fmt.Sprintf("/app/rest/buildTypes/%s/vcs/files/latest/archived/%s", EncodeLocator(btLocator), path),
 		Values: Values{
 			"basePath":          basePath,
 			"locator":           locator,
@@ -664,7 +664,7 @@ func (t BuildTypeAPI) GetZippedFileOfBuildType(path string, basePath string, loc
 // GetBuildFeatureSetting Get the setting of a build feature of the matching build configuration.
 func (t BuildTypeAPI) GetBuildFeatureSetting(btLocator BuildTypeLocator, featureId string, name string) (value string, err error) {
 	req := Request{
-		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/features/%s/%s", locatorString(btLocator), featureId, name),
+		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/features/%s/%s", EncodeLocator(btLocator), featureId, name),
 		Consumer: Coders.String,
 	}
 	err = req.Get(t.HTTPClient, &value)
@@ -674,7 +674,7 @@ func (t BuildTypeAPI) GetBuildFeatureSetting(btLocator BuildTypeLocator, feature
 // SetBuildFeatureParameter Update a parameter of a build feature of the matching build configuration.
 func (t BuildTypeAPI) SetBuildFeatureParameter(btLocator BuildTypeLocator, featureId string, name string, data string) (value string, err error) {
 	req := Request{
-		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/features/%s/%s", locatorString(btLocator), featureId, name),
+		Path:     fmt.Sprintf("/app/rest/buildTypes/%s/features/%s/%s", EncodeLocator(btLocator), featureId, name),
 		Consumer: Coders.String,
 	}
 	err = req.Put(t.HTTPClient, &value)
@@ -894,7 +894,7 @@ func (t BuildTypeAPI) SetBuildFeatureParameter(btLocator BuildTypeLocator, featu
 // // GetAllAgentRequirements Get all agent requirements of the matching build configuration.
 // func (t BuildTypeAPI) GetAllAgentRequirements(btLocator BuildTypeLocator, fields string) (value AgentRequirements, err error) {
 // 	req := Request{
-// 		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/agent-requirements", locatorString(btLocator)),
+// 		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/agent-requirements", EncodeLocator(btLocator)),
 // 		Values: Values{"fields": fields},
 // 	}
 // 	err = req.Get(t.HTTPClient, &value)
@@ -904,7 +904,7 @@ func (t BuildTypeAPI) SetBuildFeatureParameter(btLocator BuildTypeLocator, featu
 // // AddAgentRequirementToBuildType Add an agent requirement to the matching build configuration.
 // func (t BuildTypeAPI) AddAgentRequirementToBuildType(btLocator BuildTypeLocator, fields string, data AgentRequirement) (value AgentRequirement, err error) {
 // 	req := Request{
-// 		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/agent-requirements", locatorString(btLocator)),
+// 		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/agent-requirements", EncodeLocator(btLocator)),
 // 		Values: Values{"fields": fields},
 // 		Data:   data,
 // 	}
@@ -915,7 +915,7 @@ func (t BuildTypeAPI) SetBuildFeatureParameter(btLocator BuildTypeLocator, featu
 // // ReplaceAllAgentRequirements Update all agent requirements of the matching build configuration.
 // func (t BuildTypeAPI) ReplaceAllAgentRequirements(btLocator BuildTypeLocator, fields string, data AgentRequirements) (value AgentRequirements, err error) {
 // 	req := Request{
-// 		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/agent-requirements", locatorString(btLocator)),
+// 		Path:   fmt.Sprintf("/app/rest/buildTypes/%s/agent-requirements", EncodeLocator(btLocator)),
 // 		Values: Values{"fields": fields},
 // 	}
 // 	err = req.Put(t.HTTPClient, &value)
@@ -1013,7 +1013,7 @@ func (t BuildTypeAPI) SetBuildFeatureParameter(btLocator BuildTypeLocator, featu
 // }
 
 // // GetFilesListOfBuildType List all files.
-// func (t BuildTypeAPI) GetFilesListOfBuildType(basePath string, locator string, fields string, btLocator BuildTypeLocator, resolveParameters bool) (value XXX, err error) {
+// func (t BuildTypeAPI) GetFilesListOfBuildType(btLocator BuildTypeLocator,basePath string, locator string, fields string, resolveParameters bool) (value XXX, err error) {
 // 	req := Request{
 // 		Path:   "/app/rest/buildTypes/{btLocator}/vcs/files/latest",
 // 		Values: Values{"fields": fields},

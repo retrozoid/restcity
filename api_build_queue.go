@@ -14,7 +14,7 @@ func (t BuildQueueAPI) DeleteAllQueuedBuilds(buildQueueLocator BuildQueueLocator
 	req := Request{
 		Path: "/app/rest/buildQueue",
 		Values: Values{
-			"locator": locatorString(buildQueueLocator),
+			"locator": EncodeLocator(buildQueueLocator),
 			"fields":  fields,
 		},
 	}
@@ -27,7 +27,7 @@ func (t BuildQueueAPI) GetAllQueuedBuilds(buildQueueLocator BuildQueueLocator, f
 	req := Request{
 		Path: "/app/rest/buildQueue",
 		Values: Values{
-			"locator": locatorString(buildQueueLocator),
+			"locator": EncodeLocator(buildQueueLocator),
 			"fields":  fields,
 		},
 	}
@@ -85,7 +85,7 @@ func (t BuildQueueAPI) SetQueuedBuildPosition(queuePosition string, data Build, 
 // GetQueuedBuildTags Get tags of the queued matching build.
 func (t BuildQueueAPI) GetQueuedBuildTags(buildLocator BuildQueueLocator, locator, fields string) (value Tags, err error) {
 	req := Request{
-		Path: fmt.Sprintf("/app/rest/buildQueue/%s/tags", locatorString(buildLocator)),
+		Path: fmt.Sprintf("/app/rest/buildQueue/%s/tags", EncodeLocator(buildLocator)),
 		Values: Values{
 			"locator": locator,
 			"fields":  fields,
@@ -98,7 +98,7 @@ func (t BuildQueueAPI) GetQueuedBuildTags(buildLocator BuildQueueLocator, locato
 // AddTagsToBuildOfBuildQueue Add tags to the matching build.
 func (t BuildQueueAPI) AddTagsToBuildOfBuildQueue(buildLocator BuildQueueLocator, data Tags) (value Tags, err error) {
 	req := Request{
-		Path: fmt.Sprintf("/app/rest/buildQueue/%s/tags", locatorString(buildLocator)),
+		Path: fmt.Sprintf("/app/rest/buildQueue/%s/tags", EncodeLocator(buildLocator)),
 		Data: data,
 	}
 	err = req.Post(t.HTTPClient, &value)
@@ -107,7 +107,7 @@ func (t BuildQueueAPI) AddTagsToBuildOfBuildQueue(buildLocator BuildQueueLocator
 
 // DeleteQueuedBuild Delete a queued matching build.
 func (t BuildQueueAPI) DeleteQueuedBuild(buildQueueLocator BuildQueueLocator) (err error) {
-	req := Request{Path: fmt.Sprintf("/app/rest/buildQueue/%s", locatorString(buildQueueLocator))}
+	req := Request{Path: fmt.Sprintf("/app/rest/buildQueue/%s", EncodeLocator(buildQueueLocator))}
 	err = req.Delete(t.HTTPClient)
 	return
 }
@@ -115,7 +115,7 @@ func (t BuildQueueAPI) DeleteQueuedBuild(buildQueueLocator BuildQueueLocator) (e
 // GetQueuedBuild Get a queued matching build.
 func (t BuildQueueAPI) GetQueuedBuild(queuedBuildLocator BuildQueueLocator, fields string) (value *Build, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildQueue/%s", locatorString(queuedBuildLocator)),
+		Path:   fmt.Sprintf("/app/rest/buildQueue/%s", EncodeLocator(queuedBuildLocator)),
 		Values: Values{"fields": fields},
 	}
 	err = req.Get(t.HTTPClient, value)
@@ -125,7 +125,7 @@ func (t BuildQueueAPI) GetQueuedBuild(queuedBuildLocator BuildQueueLocator, fiel
 // CancelQueuedBuild Cancel a queued matching build.
 func (t BuildQueueAPI) CancelQueuedBuild(queuedBuildLocator BuildQueueLocator, data BuildCancelRequest) (value Build, err error) {
 	req := Request{
-		Path: fmt.Sprintf("/app/rest/buildQueue/%s", locatorString(queuedBuildLocator)),
+		Path: fmt.Sprintf("/app/rest/buildQueue/%s", EncodeLocator(queuedBuildLocator)),
 		Data: data,
 	}
 	err = req.Post(t.HTTPClient, &value)
@@ -135,7 +135,7 @@ func (t BuildQueueAPI) CancelQueuedBuild(queuedBuildLocator BuildQueueLocator, d
 // GetCompatibleAgentsForBuild Get compatible agents for a queued matching build.
 func (t BuildQueueAPI) GetCompatibleAgentsForBuild(queuedBuildLocator BuildQueueLocator, fields string) (value Agents, err error) {
 	req := Request{
-		Path:   fmt.Sprintf("/app/rest/buildQueue/%s/compatibleAgents", locatorString(queuedBuildLocator)),
+		Path:   fmt.Sprintf("/app/rest/buildQueue/%s/compatibleAgents", EncodeLocator(queuedBuildLocator)),
 		Values: Values{"fields": fields},
 	}
 	err = req.Get(t.HTTPClient, &value)
