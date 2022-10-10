@@ -67,7 +67,7 @@ func NewProperty(name, value string) Property {
 // Represents a name-value-type relation.
 type Property struct {
 	Name      string     `json:"name,omitempty"`
-	Value     string     `json:"value,omitempty"`
+	Value     string     `json:"value"`
 	Inherited bool       `json:"inherited,omitempty"`
 	Type      *ModelType `json:"type,omitempty"`
 }
