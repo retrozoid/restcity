@@ -110,6 +110,7 @@ type ClientImpl struct {
 	ProjectAPI           ProjectAPI
 	TestOccurrenceAPI    TestOccurrenceAPI
 	ProblemOccurrenceAPI ProblemOccurrenceAPI
+	UserAPI              UserAPI
 }
 
 func New(c Configuration) ClientImpl {
@@ -122,6 +123,7 @@ func New(c Configuration) ClientImpl {
 		ProjectAPI:           ProjectAPI{HTTPClient: httpClient},
 		TestOccurrenceAPI:    TestOccurrenceAPI{HTTPClient: httpClient},
 		ProblemOccurrenceAPI: ProblemOccurrenceAPI{HTTPClient: httpClient},
+		UserAPI:              UserAPI{HTTPClient: httpClient},
 	}
 }
 
