@@ -4,6 +4,7 @@ import "time"
 
 // Represents a locator string for filtering Agent entities.
 type AgentLocator struct {
+	Raw        string
 	Authorized bool              `json:"authorized,omitempty"` // Is the agent authorized.
 	Build      *BuildLocator     `json:"build,omitempty"`      // Build locator.
 	Compatible *BuildTypeLocator `json:"compatible,omitempty"` // Compatible build types locator.
@@ -20,6 +21,7 @@ type AgentLocator struct {
 }
 
 type AgentPoolLocator struct {
+	Raw     string
 	Agent   *AgentLocator   `json:"agent,omitempty"` // Pool's agents locator.
 	Id      string          `json:"id,omitempty"`
 	Item    *ItemLocator    `json:"item,omitempty"` // Supply multiple locators and return a union of the results.
@@ -29,6 +31,7 @@ type AgentPoolLocator struct {
 
 // Represents a locator string for filtering AuditEvent entities.
 type AuditLocator struct {
+	Raw             string
 	Action          string            `json:"action,omitempty"`          // Use `$help` to get the full list of supported actions.
 	AffectedProject *ProjectLocator   `json:"affectedProject,omitempty"` // Related project locator.
 	BuildType       *BuildTypeLocator `json:"buildType,omitempty"`       // Related build type or template locator.
@@ -47,6 +50,7 @@ func BuildLocatorID(id int64) BuildLocator {
 
 // Represents a locator string for filtering Build entities.
 type BuildLocator struct {
+	Raw                string
 	AffectedProject    *ProjectLocator   `json:"affectedProject,omitempty"` // Project (direct or indirect parent) locator.
 	Agent              *AgentLocator     `json:"agent,omitempty"`           // Agent locator.
 	AgentTypeId        int32             `json:"agentTypeId,omitempty"`     // typeId of agent used to execute build.
@@ -87,6 +91,7 @@ type BuildLocator struct {
 
 // Represents a locator string for filtering Build entities.
 type BuildQueueLocator struct {
+	Raw       string
 	Agent     *AgentLocator     `json:"agent,omitempty"`     // Agent locator.
 	BuildType *BuildTypeLocator `json:"buildType,omitempty"` // Build type locator.
 	Count     int32             `json:"count,omitempty"`     // For paginated calls, how many entities to return per page.
@@ -106,6 +111,7 @@ func BuildTypeLocatorID(id string) BuildTypeLocator {
 
 // Represents a locator string for filtering BuildType entities.
 type BuildTypeLocator struct {
+	Raw             string
 	AffectedProject *ProjectLocator         `json:"affectedProject,omitempty"` // Project (direct or indirect parent) locator.
 	Build           *BuildLocator           `json:"build,omitempty"`           // Build locator.
 	Count           int32                   `json:"count,omitempty"`           // For paginated calls, how many entities to return per page.
@@ -125,6 +131,7 @@ type BuildTypeLocator struct {
 
 // Represents a locator string for filtering Branch entities.
 type BranchLocator struct {
+	Raw       string
 	Branched  string            `json:"branched,omitempty"`  // Is feature branch.
 	Build     *BuildLocator     `json:"build,omitempty"`     // Build locator.
 	BuildType *BuildTypeLocator `json:"buildType,omitempty"` // Build type locator.
@@ -136,6 +143,7 @@ type BranchLocator struct {
 
 // Represents a locator string for filtering VcsRootInstance entities.
 type VcsRootInstanceLocator struct {
+	Raw               string
 	AffectedProject   string            `json:"affectedProject,omitempty"` // Supply multiple locators and return a union of the results.
 	Build             *BuildLocator     `json:"build,omitempty"`           // Build locator.
 	BuildType         *BuildTypeLocator `json:"buildType,omitempty"`       // Build type locator.
@@ -153,6 +161,7 @@ type VcsRootInstanceLocator struct {
 
 // Represents a locator string for filtering CloudImage entities.
 type CloudImageLocator struct {
+	Raw             string
 	AffectedProject *ProjectLocator       `json:"affectedProject,omitempty"` // Project (direct or indirect parent) locator.
 	Agent           *AgentLocator         `json:"agent,omitempty"`           // Agent locator.
 	AgentPool       *AgentPoolLocator     `json:"agentPool,omitempty"`       // Agent pool locator.
@@ -167,6 +176,7 @@ type CloudImageLocator struct {
 
 // Represents a locator string for filtering Tag entities.
 type TagLocator struct {
+	Raw     string
 	Name    string `json:"name,omitempty"`
 	Owner   string `json:"owner,omitempty"`
 	Private string `json:"private,omitempty"`
@@ -174,6 +184,7 @@ type TagLocator struct {
 
 // Represents a locator string for filtering Change entities.
 type ChangeLocator struct {
+	Raw             string
 	Build           *BuildLocator           `json:"build,omitempty"`     // Build locator.
 	BuildType       *BuildTypeLocator       `json:"buildType,omitempty"` // Build type locator.
 	Comment         string                  `json:"comment,omitempty"`
@@ -195,6 +206,7 @@ type ChangeLocator struct {
 
 // Represents a locator string for filtering VcsRoot entities.
 type VcsRootLocator struct {
+	Raw             string
 	AffectedProject *ProjectLocator `json:"affectedProject,omitempty"` // Project (direct or indirect parent) locator.
 	Count           int32           `json:"count,omitempty"`           // For paginated calls, how many entities to return per page.
 	Id              int32           `json:"id,omitempty"`              // Entity ID.
@@ -211,6 +223,7 @@ type VcsRootLocator struct {
 
 // Represents a locator string for filtering CloudInstance entities.
 type CloudInstanceLocator struct {
+	Raw             string
 	AffectedProject *ProjectLocator      `json:"affectedProject,omitempty"` // Project (direct or indirect parent) locator.
 	Agent           *AgentLocator        `json:"agent,omitempty"`           // Agent locator.
 	Id              string               `json:"id,omitempty"`
@@ -224,6 +237,7 @@ type CloudInstanceLocator struct {
 
 // Represents a locator string for filtering CloudProfile entities.
 type CloudProfileLocator struct {
+	Raw             string
 	AffectedProject *ProjectLocator    `json:"affectedProject,omitempty"` // Project (direct or indirect parent) locator.
 	CloudProviderId string             `json:"cloudProviderId,omitempty"`
 	Id              string             `json:"id,omitempty"`
@@ -236,6 +250,7 @@ type CloudProfileLocator struct {
 
 // Represents a locator string for filtering Investigation entities.
 type InvestigationLocator struct {
+	Raw               string
 	AffectedProject   *ProjectLocator   `json:"affectedProject,omitempty"` // Project (direct or indirect parent) locator.
 	Assignee          string            `json:"assignee,omitempty"`
 	AssignmentProject *ProjectLocator   `json:"assignmentProject,omitempty"` // Project (direct parent) locator.
@@ -255,6 +270,7 @@ type InvestigationLocator struct {
 
 // Represents a locator string for filtering ProblemOccurrence entities.
 type ProblemOccurrenceLocator struct {
+	Raw                   string
 	AffectedProject       *ProjectLocator `json:"affectedProject,omitempty"`       // Project (direct or indirect parent) locator.
 	Build                 *BuildLocator   `json:"build,omitempty"`                 // Build locator.
 	Count                 int32           `json:"count,omitempty"`                 // For paginated calls, how many entities to return per page.
@@ -272,6 +288,7 @@ type ProblemOccurrenceLocator struct {
 
 // Represents a locator string for filtering Problem entities.
 type ProblemLocator struct {
+	Raw                   string
 	AffectedProject       *ProjectLocator `json:"affectedProject,omitempty"`       // Project (direct or indirect parent) locator.
 	Build                 *BuildLocator   `json:"build,omitempty"`                 // Build locator.
 	Count                 int32           `json:"count,omitempty"`                 // For paginated calls, how many entities to return per page.
@@ -288,6 +305,7 @@ type ProblemLocator struct {
 
 // Represents a locator string for filtering Test entities.
 type TestLocator struct {
+	Raw                   string
 	AffectedProject       *ProjectLocator `json:"affectedProject,omitempty"`       // Project (direct or indirect parent) locator.
 	Count                 int32           `json:"count,omitempty"`                 // For paginated calls, how many entities to return per page.
 	CurrentlyFailing      bool            `json:"currentlyFailing,omitempty"`      // Is currently failing.
@@ -303,6 +321,7 @@ type TestLocator struct {
 
 // Represents a locator string for filtering TestOccurrence entities.
 type TestOccurrenceLocator struct {
+	Raw                   string
 	AffectedProject       *ProjectLocator   `json:"affectedProject,omitempty"` // Project (direct or indirect parent) locator.
 	Branch                string            `json:"branch,omitempty"`
 	Build                 *BuildLocator     `json:"build,omitempty"`                 // Build locator.
@@ -326,6 +345,7 @@ type TestOccurrenceLocator struct {
 
 // Represents a locator string for filtering Mute entities.
 type MuteLocator struct {
+	Raw             string
 	AffectedProject *ProjectLocator `json:"affectedProject,omitempty"` // Project (direct or indirect parent) locator.
 	CreationDate    *time.Time      `json:"creationDate,omitempty"`    // yyyyMMddTHHmmss+ZZZZ
 	Id              int32           `json:"id,omitempty"`
@@ -345,6 +365,7 @@ func ProjectLocatorID(id string) ProjectLocator {
 
 // Represents a locator string for filtering Project entities.
 type ProjectLocator struct {
+	Raw             string
 	AffectedProject *ProjectLocator   `json:"affectedProject,omitempty"` // Project (direct or indirect parent) locator.
 	Archived        bool              `json:"archived,omitempty"`        // Is archived.
 	Build           *BuildLocator     `json:"build,omitempty"`           // Build locator.
@@ -365,6 +386,7 @@ type ProjectLocator struct {
 
 // Represents a locator string for filtering User entities.
 type UserLocator struct {
+	Raw           string
 	AffectedGroup *UserGroupLocator `json:"affectedGroup,omitempty"` // User group (direct or indirect parent) locator.
 	Email         string            `json:"email,omitempty"`
 	Group         *UserGroupLocator `json:"group,omitempty"` // User group (direct parent) locator.
@@ -379,6 +401,7 @@ type UserLocator struct {
 
 // Represents a locator string for filtering Group entities.
 type UserGroupLocator struct {
+	Raw  string
 	Item *ItemLocator `json:"item,omitempty"` // Supply multiple locators and return a union of the results.
 	Key  string       `json:"key,omitempty"`
 	Name string       `json:"name,omitempty"`

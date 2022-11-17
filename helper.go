@@ -39,6 +39,10 @@ func EncodeLocator(structure interface{}) string {
 	for ; structVal.Kind() == reflect.Ptr; structVal = structVal.Elem() {
 	}
 	if structVal.Kind() == reflect.Struct {
+		var raw = structVal.FieldByName("Raw")
+		if raw.IsValid() && !raw.IsZero() {
+			return raw.String()
+		}
 		for i := 0; i < structVal.NumField(); i++ {
 			name := strings.TrimSpace(structType.Field(i).Tag.Get("json"))
 			isOmitempty := strings.HasSuffix(name, omitempty)
